@@ -54,16 +54,19 @@ angular.module('app.controllers', [])
                 };
             }])
         .controller('ModalCtrl', ["$scope", "ngDialog", "$compile", function ($scope, ngDialog, $compile) {
+
                 $scope.clickToOpen = function () {
                     $('#elementosmodal').empty();//limpia el visualizador
                     idelemento = event.target.id;
                     ngDialog.open({
+                        class:'ngdialog-theme-default',
                         template: 'templates/modal.html',
                         width: '50%',
                         height: '100%',
                         controller: 'modaldatosCtrl',
                         scope: $scope
                     });
+
                 };
                 $scope.largotext=function(largo,id){
                     var padre=$('#'+id).parent().attr('id');
@@ -83,6 +86,27 @@ angular.module('app.controllers', [])
                    
                     
                 }
+                $scope.anchotext=function (ancho,id) {
+                    if( ancho=== '1'){
+                        //grande
+                        $('#' + id).attr("class", " input-group input-group-lg");
+                    } else if (ancho === '2') {
+                        //normal
+                        $('#' + id).attr("class", " input-group");
+                    } else if (ancho === '3') {
+                        //pequeño
+                        $('#' + id).attr("class", " input-group input-group-sm");
+                    }
+                }
+                $scope.posiciontext=function(posicion,id){
+                    if(posicion==='derecha'){
+                        $($('#' + id).children('.textotitulo')).before($('#' + id).children('.texto')); //derecha
+                        $($('#' + id).children('.check')).before($('#' + id).children('.textocheck')); //derecha
+                    }else if(posicion==='izquierda'){
+                        $($('#' + id).children('.texto')).before($('#' + id).children('.textotitulo'));//izquierda
+                        $($('#' + id).children('.textocheck')).before($('#' + id).children('.check')); //izquierda
+                    }
+                }
                 $scope.guardarelemento = function (e) {
 
                     var abuelo = $('#' + idelemento).parent().attr("id");
@@ -91,11 +115,33 @@ angular.module('app.controllers', [])
                     console.log('abuelo class:' + classabuelo);
                     var padre = $('#' + abuelo).children().attr('id');
                     console.log('padre :' + padre);
-
+                        //texto
                     if ($('#' + padre).children('.texto').attr("class") === 'form-control texto') {
-                        $('#' + padre).children('.textotitulo').attr('id', 'titulotxto' + padre);
-                        var idh1 = $('#' + padre).children('.textotitulo').attr('id');
-                        $('#' + idh1).text($('#nombreelemento').val());
+
+                            $scope.value={
+                                ancho:null,
+                                option1: '1'
+                            }
+
+                            console.log('ancho scope:'+$scope.ancho)
+                        //largo del texbox//
+                        var largo=$('select[id=largo]').val();
+                        $scope.largotext(largo,padre);
+                        // ancho del texbox
+                        var ancho = $('select[id=ancho]').val();
+                        $scope.anchotext(ancho,padre);
+                        // cambio posicion del titulo al textbox//
+                        var posicion=$('input:radio[name=posicion]:checked').val();
+                        $scope.posiciontext(posicion,padre);
+                        //cambio del nombre
+                        $('#'+padre).children('.textotitulo').attr('id','titulotxto'+padre);
+
+                        var idh1=$('#'+padre).children('.textotitulo').attr('id');
+                        console.log('valor='+$('#' + idh1).text());
+                        $('#nombreelemento').text( $('#' + idh1).val())
+                        $('#' + idh1).text( $('#nombreelemento').val());
+
+
                         $('#' + idh1).children('.textotitulo').attr("style", "font-size:" + $('#letrasize').val() + "px");
                     }
                     if ($('#' + abuelo).attr("class") === 'element boton ui-resizable') {
@@ -138,5 +184,51 @@ angular.module('app.controllers', [])
                     ngDialog.closeAll();
                 };
             }])
-        .controller('modaldatosCtrl', function () {
+        .controller('modaldatosCtrl', function ($scope) {
+
+            var abuelo = $('#' + idelemento).parent().attr("id");
+            var padre = $('#' + abuelo).children().attr('id');
+            console.log('pamo:'+padre);
+
+            $('#'+padre).children('.textotitulo').attr('id','titulotxto'+padre);
+            var idh1=$('#'+padre).children('.textotitulo').attr('id');
+
+            // obtengo los valores de los atributos del elemento texbox//
+
+            if ($('#' + padre).children('.texto').attr("class") === 'form-control texto'){
+
+                $scope.formdatatexto={}
+                $scope.data='true';
+                $scope.nomb_elemento=$('#' + idh1).text();
+            }
+
+
+
+
+        })
+        .controller('colorCtrl', function($scope) {
+            $scope.fonts = [
+                'Arial',
+                'Arial Black',
+                'Comic Sans MS',
+                'Courier New',
+                'Georgia',
+                'Impact',
+                'Times New Roman',
+                'Trebuchet MS',
+                'Verdana'
+            ];
+
+            $scope.font;
+            $scope.textColor;
+            $scope.textBackground;
+
+            $scope.scopeVariable.options = {
+                label: "Choose a color",
+                icon: "brush",
+                default: "#f00",
+                genericPalette: false,
+                history: false
+            };
+
         })

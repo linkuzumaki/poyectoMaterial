@@ -93,3 +93,19 @@
   width: 100%
 
 }
+
+.inputdemoErrors .inputErrorsApp {
+    min-height: 48px; }
+
+.inputdemoErrors md-input-container > p {
+    font-size: 0.8em;
+    text-align: left;  width: 100%; }
+
+.md-color-picker-dialog ._md .md-transition-in{
+    z-index: 3 !important;
+    position: absolute !important;
+
+}
+.ngdialog {
+    z-index: 20 !important;
+}

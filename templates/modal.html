@@ -1,29 +1,64 @@
-<div class="ngdialog-message" ng-controller="ModalCtrl" >
-    <h3>Editando Elementos</h3>
-    <p>Dialog containing work in which a user has to perform a task (e.g. editing data).</p>
-    <p>'Save' would save the task's actions, while 'Cancel' would cause the task's actions to be lost.</p>
-    <p>...other controls here...</p>
-    <div class="col col-30" style="margin-left: 10px" >
-      N°columnas:<br>
-      <input class="text-center" type="text" ng-model="num_columanas" placeholder="columnas" id="columnas">
-      N°filas:
-      <input class="text-center" type="text" ng-model="num_filas" placeholder="alto" id="filas" style="width: 100%">
-      <div class="form-group">
-          <label for="color-input" class="form-control">Color:</label>
-           <input colorpicker class="form-control" ng-model="hexPicker.color" type="text" />
-      </div>
-    </div>
-    <div class="ngdialog-buttons">
-    <button type="button" class="ngdialog-button ngdialog-button-secondary" ng-click="closeThisDialog('Cancel')">Cancel</button>
-    <button type="button" class="ngdialog-button ngdialog-button-primary" ng-click="guardarelemento()">Save</button>
-</div>
-</div>
-<script type="text/javascript">
-  //using for example these settings inside your controller
-  $scope.customSettings = {
-    control: 'brightness',
-    theme: 'bootstrap',
-    position: 'top left'
-  };
+<div role="dialog" ng-controller="ModalCtrl" style="z-index: 1">
+    <md-toolbar>
+        <div class="md-toolbar-tools">
+            <h2>editando elementos</h2>
+        </div>
+    </md-toolbar>
+    <div class="demo-dialog-content">
+        <div layout="row" id="attrtexto" ng-show="data"  style="width: 100%;margin:10px; padding: 5px">
 
-</script>
+            <md-input-container  flex="50">
+                <label>Titulo del texto</label>
+                <input required name="nomb_elemento" ng-model="nomb_elemento">
+                <div ng-messages="nomb_elemento.$error">
+                    <div ng-message="required">dato obligatorio.</div>
+                </div>
+            </md-input-container>
+
+            <md-input-container flex="50">
+                <label>Ancho</label>
+                <md-select name="ancho" ng-model="value.ancho" required  id="ancho">
+                    <md-option value="1">grande</md-option>
+                    <md-option value="2">normal</md-option>
+                    <md-option value="3">pequeño</md-option>
+                </md-select>
+                <tt>valor = {{value.ancho}}</tt>
+            </md-input-container>
+            <div md-color-picker ng-model="valueObj"></div>
+
+            <div layout="column" flex="20">
+                <div class="form-group">
+                    <label for="largo">largo:</label>
+                    <select class="form-control" id="largo">
+                        <option value="1">25</option>
+                        <option value="2">50</option>
+                        <option value="3">75</option>
+                        <option value="4">100</option>
+                    </select>
+                </div>
+            </div>
+            <div layout="column" flex="30">
+                Posicion:
+                <div class="radio-inline">
+                    <input type="radio" name="posicion" value="izquierda">Izquierda
+                </div>
+                <div class="radio-inline">
+                    <input type="radio" name="posicion" value="derecha" >Derecha
+                </div>
+            </div>
+
+        </div>
+        <div class="row" id="attrpanel" style="display: none">
+                 N°columnas:<br>
+            <input class="form-control" type="text" ng-model="num_columanas" placeholder="columnas" id="columnas">
+                 N°filas:
+            <input class="form-control" type="text" ng-model="num_filas" placeholder="alto" id="filas">
+        </div>
+    </div>
+    </div>
+    <div layout="row" class="demo-dialog-button">
+        <button type="button" class="ngdialog-button ngdialog-button-secondary" ng-click="closeThisDialog('Cancel')">Cancel</button>
+        <button type="button" class="ngdialog-button ngdialog-button-primary" ng-click="guardarelemento()">Save</button>
+    </div>
+</div>
+

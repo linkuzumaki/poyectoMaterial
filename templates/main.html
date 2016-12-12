@@ -43,8 +43,14 @@
                                     <span>parrafo+</span>
                                 </md-list-item>
                                 <md-divider></md-divider>
-                                <md-list-item class="md-3-line item" ng-click="null">
-                                    <span>texto+</span>
+                                <md-list-item class="md-3-line">
+                                    <div id="texbox" style="display:none" class="textoP">
+                                        <div class="input-group element textoPH"  >
+                                            <span class="input-group-addon textotitulo" id="ti">titulo</span>
+                                            <input type="text" class="form-control texto" id="teo" aria-describedby="basic-addon3">
+                                        </div>
+                                    </div>
+                                    <md-button crear-elementos id="elemt3" class="md-raised md-primary">texto+</md-button>
                                 </md-list-item>
                                 <md-divider></md-divider>
                             </md-list>
@@ -63,8 +69,6 @@
                     <div layout="row" style="padding: 0px" ng-repeat="i in getNumber(number) track by $index" id="{{$index + 1}}">
                          <div layout="column" class="columnas" ng-repeat="i in getNumber(number) track by $index" id="col{{$index+2}}"></div>
                     </div>
-                   
-                   
                 </md-card-content>
             </md-card>
         </div>
@@ -75,8 +79,10 @@
                 </md-card-header-text>
                 <md-divider></md-divider>
                 <md-card-content>
-                    <div layout="row">
-                        <input colorpicker class="form-control" ng-model="hexPicker.color" type="text" />
+                    <div layout="row"  >
+                      <!--  <div md-color-picker ng-model="valueObj"></div>-->
+
+
                     </div>
                 </md-card-content>
             </md-card>

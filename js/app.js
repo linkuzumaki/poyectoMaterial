@@ -4,5 +4,9 @@
      'ngMessages',
      'ngRoute',
      'app.routes',
-     'app.controllers','app.directive','ngDialog'])
+     'app.controllers',
+     'app.directive',
+     'ngDialog',
+     'mdColorPicker',
+     'color.picker'])
 
