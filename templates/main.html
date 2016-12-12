@@ -1,0 +1,85 @@
+<md-content id="contenedor">
+   <!-- <h1>Página Principal</h1>
+    <p>{{ message }}</p>-->
+    <div layout="row" layout-md="column">
+        <div flex="20">
+            <md-card>
+                <md-card-header-text>
+                    <md-card-title>Seleccion de elementos</md-card-title>
+                </md-card-header-text>
+                <md-card-content>
+                    <div layout="row">
+                        <div flex="50">
+                            <md-list flex>
+                                <md-list-item class="md-3-line">
+                                    <div  class="element boton grid" id="boton" style="display: none" >
+                                        <input  class="btn btn-success element"   value="boton">
+                                    </div>
+                                    <md-button crear-elementos id="elemt2" class="md-raised md-primary">boton+</md-button>
+                                </md-list-item>
+                                <md-divider></md-divider>
+                                <md-list-item class="md-3-line">
+                                    <div id="panel" style="display: none">   
+                                        <md-card id="panelPadre" class="panelP card grid">
+                                            <md-card-header id="panelheader">
+                                                <md-card-header-text>
+                                                    <span class="md-title">Panel</span>
+                                                    <md-divider></md-divider>
+                                                </md-card-header-text> 
+                                            </md-card-header>
+                                            <md-card-content id="panelbody" class="panelbody" style="height: 100%;margin: 5px"  ondragenter="return enter(event)" ondragover="return over(event)" ondragleave="return leave(event)" ondrop="return drop(event)">
+                                            </md-card-content>
+                                        </md-card>
+                                    </div>
+                                 
+                                    <md-button crear-elementos id="elemt6" class="md-raised md-primary">panel+</md-button>
+                                </md-list-item>
+                                <md-divider></md-divider>
+                            </md-list>
+                        </div>
+                        <div flex="50">
+                            <md-list flex>
+                                <md-list-item class="md-3-line item" ng-click="null">
+                                    <span>parrafo+</span>
+                                </md-list-item>
+                                <md-divider></md-divider>
+                                <md-list-item class="md-3-line item" ng-click="null">
+                                    <span>texto+</span>
+                                </md-list-item>
+                                <md-divider></md-divider>
+                            </md-list>
+                        </div>
+                    </div>
+                </md-card-content>
+            </md-card>
+        </div>
+        <div flex="60">
+            <md-card id="pizarra">
+                <md-card-header-text>
+                    <md-card-title>Seleccion de elementos</md-card-title>
+                </md-card-header-text>
+                <md-divider></md-divider>
+                <md-card-content ng-controller="grillaCtrl" flex layout-padding style="height:600px;overflow-y : scroll;margin: 5px" id="contpizarra"  ondragenter="return enter(event)" ondragover="return over(event)" ondragleave="return leave(event)" ondrop="return drop(event)">
+                    <div layout="row" style="padding: 0px" ng-repeat="i in getNumber(number) track by $index" id="{{$index + 1}}">
+                         <div layout="column" class="columnas" ng-repeat="i in getNumber(number) track by $index" id="col{{$index+2}}"></div>
+                    </div>
+                   
+                   
+                </md-card-content>
+            </md-card>
+        </div>
+        <div flex="20">
+            <md-card>
+                <md-card-header-text>
+                    <md-card-title>Seleccion de elementos</md-card-title>
+                </md-card-header-text>
+                <md-divider></md-divider>
+                <md-card-content>
+                    <div layout="row">
+                        <input colorpicker class="form-control" ng-model="hexPicker.color" type="text" />
+                    </div>
+                </md-card-content>
+            </md-card>
+        </div>
+    </div>
+</md-content>
