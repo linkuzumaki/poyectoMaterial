@@ -1,4 +1,5 @@
 var contador = 0;
+var ancho,largo,posicion;
 angular.module('app.controllers', [])
         .controller('mainController', function ($scope) {
             $scope.message = 'Hola, Mundo!';
@@ -86,15 +87,16 @@ angular.module('app.controllers', [])
                    
                     
                 }
-                $scope.anchotext=function (ancho,id) {
-                    if( ancho=== '1'){
+                $scope.anchotext=function (anch,id) {
+                    if( anch=== '1'){
                         //grande
                         $('#' + id).attr("class", " input-group input-group-lg");
-                    } else if (ancho === '2') {
+                    } else if (anch === '2') {
                         //normal
                         $('#' + id).attr("class", " input-group");
-                    } else if (ancho === '3') {
+                    } else if (anch === '3') {
                         //pequeño
+                        console.log('entre')
                         $('#' + id).attr("class", " input-group input-group-sm");
                     }
                 }
@@ -118,27 +120,17 @@ angular.module('app.controllers', [])
                         //texto
                     if ($('#' + padre).children('.texto').attr("class") === 'form-control texto') {
 
-                            $scope.value={
-                                ancho:null,
-                                option1: '1'
-                            }
 
-                            console.log('ancho scope:'+$scope.ancho)
                         //largo del texbox//
-                        var largo=$('select[id=largo]').val();
                         $scope.largotext(largo,padre);
                         // ancho del texbox
-                        var ancho = $('select[id=ancho]').val();
                         $scope.anchotext(ancho,padre);
                         // cambio posicion del titulo al textbox//
-                        var posicion=$('input:radio[name=posicion]:checked').val();
                         $scope.posiciontext(posicion,padre);
                         //cambio del nombre
-                        $('#'+padre).children('.textotitulo').attr('id','titulotxto'+padre);
-
+                        $('#'+padre).children('.textotitulo').attr('id');
                         var idh1=$('#'+padre).children('.textotitulo').attr('id');
-                        console.log('valor='+$('#' + idh1).text());
-                        $('#nombreelemento').text( $('#' + idh1).val())
+
                         $('#' + idh1).text( $('#nombreelemento').val());
 
 
@@ -188,22 +180,36 @@ angular.module('app.controllers', [])
 
             var abuelo = $('#' + idelemento).parent().attr("id");
             var padre = $('#' + abuelo).children().attr('id');
-            console.log('pamo:'+padre);
-
             $('#'+padre).children('.textotitulo').attr('id','titulotxto'+padre);
             var idh1=$('#'+padre).children('.textotitulo').attr('id');
-
+                console.log('titulo:   '+$('#'+ idh1).text())
             // obtengo los valores de los atributos del elemento texbox//
 
             if ($('#' + padre).children('.texto').attr("class") === 'form-control texto'){
 
-                $scope.formdatatexto={}
-                $scope.data='true';
-                $scope.nomb_elemento=$('#' + idh1).text();
+                $scope.verattrtexto='true';
+                $scope.nomb_elemento=$('#'+ idh1).text();
+                $scope.ancho= {
+                    opcion: null,
+                }
+                $scope.largo={
+                    opcion:null,
+                }
+                $scope.posicion={
+                    opcion:'izquierda'
+                }
+
+                $scope.cambio=function(){
+                    ancho=$scope.ancho.opcion;
+                    largo=$scope.largo.opcion;
+                    posicion=$scope.posicion.opcion
+                }
+
             }
+            if ($('#' + padre).attr("class") === 'panelP card grid _md') {
+                $scope.verattrpanel='true';
 
-
-
+            }
 
         })
         .controller('colorCtrl', function($scope) {
