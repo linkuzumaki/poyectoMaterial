@@ -57,9 +57,9 @@ angular.module('app.controllers', [])
         .controller('ModalCtrl', ["$scope", "ngDialog", "$compile", function ($scope, ngDialog, $compile) {
 
                 $scope.clickToOpen = function () {
-                    $('#elementosmodal').empty();//limpia el visualizador
                     idelemento = event.target.id;
-                    ngDialog.open({
+
+                    $scope.dialog= ngDialog.open({
                         class:'ngdialog-theme-default',
                         template: 'templates/modal.html',
                         width: '50%',
@@ -67,8 +67,47 @@ angular.module('app.controllers', [])
                         controller: 'modaldatosCtrl',
                         scope: $scope
                     });
-
                 };
+                    $scope.enter=function () {
+                       /* var html3=('<div id="ElemClonado" class="textoP ng-scope">'+
+                            '<div class="input-group element textoPH" id="parrafo0" style="width:100%;height:100%">'+
+                            '<span class="input-group-addon textotitulo" id="titulotxtoparrafo0">titulo</span>'+
+                            '<input type="text" class="form-control texto" id="teo" aria-describedby="basic-addon3">'+
+                            '</div>'+
+                           '<div id="elementos23"></div>');*/
+
+                       /* var abuelo = $('#' + idelemento).parent().attr("id");
+                        var elemento = document.getElementById(abuelo); // id elemento
+                        angular.element(document.getElementById('view'))
+                            .append($compile(elemento)($scope));*/
+
+                    }
+                $scope.salir=function () {
+
+                    /* var abuelo = $('#eliminar0').parent().attr("id");
+                     console.log(abuelo+'visualizador')
+                     var padre = $('#' + abuelo).children().attr('id');
+                     console.log(padre+'padre')
+                     $scope.editartexto(padre);
+                     */
+                }
+                $scope.editartexto=function(padre) {
+                    if ($('#' + padre).children('.texto').attr("class") === 'form-control texto') {
+
+                        //largo del texbox//
+                        $scope.largotext(largo, padre);
+                        // ancho del texbox
+                        $scope.anchotext(ancho, padre);
+                        // cambio posicion del titulo al textbox//
+                        $scope.posiciontext(posicion, padre);
+                        //cambio del nombre
+                        $('#' + padre).children('.textotitulo').attr('id');
+                        var idh1 = $('#' + padre).children('.textotitulo').attr('id');
+                        $('#' + idh1).text($('#nombreelemento').val());
+                        $('#' + idh1).children('.textotitulo').attr("style", "font-size:" + $('#letrasize').val() + "px");
+
+                    }
+                }
                 $scope.largotext=function(largo,id){
                     var padre=$('#'+id).parent().attr('id');
                     var elem=document.getElementById(padre);
@@ -110,32 +149,15 @@ angular.module('app.controllers', [])
                     }
                 }
                 $scope.guardarelemento = function (e) {
-
                     var abuelo = $('#' + idelemento).parent().attr("id");
                     console.log('abuelo :' + abuelo);
                     var classabuelo = $('#' + idelemento).parent().attr("class");
                     console.log('abuelo class:' + classabuelo);
                     var padre = $('#' + abuelo).children().attr('id');
                     console.log('padre :' + padre);
-                        //texto
-                    if ($('#' + padre).children('.texto').attr("class") === 'form-control texto') {
+                    //texto
+                    $scope.editartexto(padre);
 
-
-                        //largo del texbox//
-                        $scope.largotext(largo,padre);
-                        // ancho del texbox
-                        $scope.anchotext(ancho,padre);
-                        // cambio posicion del titulo al textbox//
-                        $scope.posiciontext(posicion,padre);
-                        //cambio del nombre
-                        $('#'+padre).children('.textotitulo').attr('id');
-                        var idh1=$('#'+padre).children('.textotitulo').attr('id');
-
-                        $('#' + idh1).text( $('#nombreelemento').val());
-
-
-                        $('#' + idh1).children('.textotitulo').attr("style", "font-size:" + $('#letrasize').val() + "px");
-                    }
                     if ($('#' + abuelo).attr("class") === 'element boton ui-resizable') {
                         $("#" + padre).attr("value", $('#nombreelemento').val());
                         console.log($('#' + padre).text());
@@ -176,42 +198,44 @@ angular.module('app.controllers', [])
                     ngDialog.closeAll();
                 };
             }])
-        .controller('modaldatosCtrl', function ($scope) {
+        .controller('modaldatosCtrl',["$scope","$compile",function ($scope,$compile) {
 
             var abuelo = $('#' + idelemento).parent().attr("id");
             var padre = $('#' + abuelo).children().attr('id');
             $('#'+padre).children('.textotitulo').attr('id','titulotxto'+padre);
             var idh1=$('#'+padre).children('.textotitulo').attr('id');
-                console.log('titulo:   '+$('#'+ idh1).text())
+
+
+
             // obtengo los valores de los atributos del elemento texbox//
 
-            if ($('#' + padre).children('.texto').attr("class") === 'form-control texto'){
+            if ($('#' + padre).children('.texto').attr("class") === 'form-control texto') {
 
-                $scope.verattrtexto='true';
-                $scope.nomb_elemento=$('#'+ idh1).text();
-                $scope.ancho= {
+                $scope.verattrtexto = 'true';
+                $scope.nomb_elemento = $('#' + idh1).text();
+                $scope.ancho = {
                     opcion: null,
                 }
-                $scope.largo={
-                    opcion:null,
+                $scope.largo = {
+                    opcion: null,
                 }
-                $scope.posicion={
-                    opcion:'izquierda'
+                $scope.posicion = {
+                    opcion: 'izquierda'
                 }
+                $scope.cambio = function () {
+                    ancho = $scope.ancho.opcion;
+                    largo = $scope.largo.opcion;
+                    posicion = $scope.posicion.opcion
+                    $scope.elemnto();
 
-                $scope.cambio=function(){
-                    ancho=$scope.ancho.opcion;
-                    largo=$scope.largo.opcion;
-                    posicion=$scope.posicion.opcion
                 }
-
             }
             if ($('#' + padre).attr("class") === 'panelP card grid _md') {
                 $scope.verattrpanel='true';
 
             }
 
-        })
+        }])
         .controller('colorCtrl', function($scope) {
             $scope.fonts = [
                 'Arial',
@@ -238,3 +262,4 @@ angular.module('app.controllers', [])
             };
 
         })
+

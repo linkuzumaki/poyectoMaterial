@@ -10,3 +10,15 @@
      'mdColorPicker',
      'color.picker'])
 
+     .config(function($mdThemingProvider) {
+         $mdThemingProvider.theme('default')
+
+             .primaryPalette('blue',{
+                 'default': '500'
+
+            })
+             .accentPalette('indigo',{
+                 'default':'A200'
+             })
+
+     });

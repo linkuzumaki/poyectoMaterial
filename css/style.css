@@ -2,16 +2,26 @@
     left: 7px;
 }
 
-#pizarra{
-    background-color: #e2e4e6;
+#contpizarra{
+
     overflow: hidden;
     z-index: 10;
     box-shadow: 0 1px 1px rgba(0,0,0,.1);
-    border: 1px dashed #ccc;
+    background: #E2E4E6;
+    border-radius: 3px;
+    box-sizing: border-box;
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-flex-direction: column;
+    -ms-flex-direction: column;
+    flex-direction: column;
+    max-height: 100%;
 
 }
 #contenedor{
-    background-color: #0079bf;
+    background-color: #2196F3;
     overflow: hidden;
     z-index: 10;
     box-shadow: 0 1px 1px rgba(0,0,0,.1);
@@ -109,3 +119,12 @@
 .ngdialog {
     z-index: 20 !important;
 }
+.ngdialog-content{
+    background-color: rgba(255, 255, 255, 0) !important;
+    padding: 0px !important;
+}
+.ngdialog.ngdialog-theme-default{
+    padding-bottom: 160px !important;
+    padding-top: 5% !important;
+}
+

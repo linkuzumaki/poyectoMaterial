@@ -1,55 +1,69 @@
-<div role="dialog" ng-controller="ModalCtrl" style="z-index: 1">
+
+<md-card ng-controller="ModalCtrl" style="z-index: 1">
     <md-toolbar>
         <div class="md-toolbar-tools">
             <h2>editando elementos</h2>
         </div>
     </md-toolbar>
-    <div class="demo-dialog-content">
-        <div layout="row" id="attrtexto" ng-show="verattrtexto"  style="width: 100%;margin:10px; padding: 5px">
+    <md-card-content layout-paddin style="margin: 5px">
+        <div layout="row">
+            <div class="panel panel-default"  style="width: 100%;height: 150px">
+                <button ng-click="elemnto()">ver elemnto a editar</button>
+                <div class="panel-body" id="view">
 
-            <md-input-container  flex="50">
-                <label>Titulo del texto</label>
-                <input required name="nomb_elemento" ng-model="nomb_elemento" id="nombreelemento">
-                <div ng-messages="nomb_elemento.$error">
-                    <div ng-message="required">dato obligatorio.</div>
                 </div>
-            </md-input-container>
-            <md-input-container flex="50">
-                <label>Ancho</label>
-                <md-select name="opcion" ng-model="ancho.opcion" ng-change="cambio()" required  id="ancho" >
-                    <md-option value="3">pequeño</md-option>
-                    <md-option value="2">normal</md-option>
-                    <md-option value="1">grande</md-option>
-                </md-select>
-            </md-input-container>
-            <md-input-container flex="50">
-                <label>Largo</label>
-                <md-select name="opcion1" ng-model="largo.opcion" ng-change="cambio()" required  id="largo" >
-                    <md-option value="1">25</md-option>
-                    <md-option value="2">50</md-option>
-                    <md-option value="3">75</md-option>
-                    <md-option value="4">100</md-option>
-                </md-select>
-            </md-input-container>
-            <md-input-container flex="50">
-                <md-radio-group ng-model="posicion.opcion" ng-change="cambio()">
-                    <md-radio-button value="izquierda" class="md-primary">izquierda</md-radio-button>
-                    <md-radio-button value="derecha"> derecha </md-radio-button>
-                </md-radio-group>
-            </md-input-container>
-            <div md-color-picker ng-model="valueObj"></div>
+            </div>
         </div>
-        <div class="row" id="attrpanel" ng-show="verattrpanel">
-                 N°columnas:<br>
+        <div layout="column" id="attrtexto" ng-show="verattrtexto"  style="width: 100%;margin:10px; padding: 5px">
+
+            <div layout="row">
+                <md-input-container  flex="100"  class="md-block">
+                    <label>Titulo</label>
+                    <input required name="nomb_elemento" ng-model="nomb_elemento" ng-mouseup="enter()" ng-blur="salir()" id="nombreelemento">
+                </md-input-container>
+            </div>
+            <div layout="row">
+                <md-input-container flex="50">
+                    <label>Ancho</label>
+                    <md-select name="opcion" ng-model="ancho.opcion" ng-change="cambio()" ng-mouseup="enter()" required  id="ancho" >
+                        <md-option value="3">pequeño</md-option>
+                        <md-option value="2">normal</md-option>
+                        <md-option value="1">grande</md-option>
+                    </md-select>
+                </md-input-container>
+                <md-input-container flex="50" >
+                    <label>Largo</label>
+                    <md-select name="opcion1" ng-model="largo.opcion" ng-change="cambio()" ng-mouseup="enter()" required  id="largo" >
+                        <md-option value="1">25</md-option>
+                        <md-option value="2">50</md-option>
+                        <md-option value="3">75</md-option>
+                        <md-option value="4">100</md-option>
+                    </md-select>
+                </md-input-container>
+            </div>
+            <div layout="row">
+                <container flex="50">
+                    <p>posicion:</p>
+                    <md-radio-group ng-model="posicion.opcion" ng-change="cambio()" ng-mouseup="enter()">
+                        <md-radio-button value="izquierda" class="md-primary">izquierda</md-radio-button>
+                        <md-radio-button value="derecha"> derecha </md-radio-button>
+                    </md-radio-group>
+                </container>
+                <div layout="row" md-color-picker ng-model="valueObj"></div>
+            </div>
+        </div>
+        <div layout="column" id="attrpanel" ng-show="verattrpanel">
+            N°columnas:<br>
             <input class="form-control" type="text" ng-model="num_columanas" placeholder="columnas" id="columnas">
-                 N°filas:
+            N°filas:
             <input class="form-control" type="text" ng-model="num_filas" placeholder="alto" id="filas">
         </div>
-    </div>
-    </div>
-    <div layout="row" class="demo-dialog-button">
-        <button type="button" class="ngdialog-button ngdialog-button-secondary" ng-click="closeThisDialog('Cancel')">Cancel</button>
-        <button type="button" class="ngdialog-button ngdialog-button-primary" ng-click="guardarelemento()">Save</button>
-    </div>
-</div>
+    </md-card-content>
+    <md-card-actions layout="row" layout-align="end center">
+        <md-button type="button" class="ngdialog-button ngdialog-button-secondary" ng-click="closeThisDialog('Cancel')">Cancel</md-button>
+        <md-button type="button" class="ngdialog-button ngdialog-button-primary" ng-click="guardarelemento()">Save</md-button>
+    </md-card-actions>
+
+</md-card>
+
 

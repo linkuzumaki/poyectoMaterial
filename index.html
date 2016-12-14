@@ -23,7 +23,6 @@
     <body ng-controller="mainController"> 
         <div id="sideNavContainer" ng-controller="sideNavController" layout="row" ng-cloak>
             <md-sidenav md-component-id="left" class="md-sidenav-left">
-
             </md-sidenav>
             <md-sidenav md-component-id="right" class="md-sidenav-right">
                 <md-button href="http://google.com">Google</md-button>
@@ -31,15 +30,16 @@
         </div>
     <md-toolbar class="md-hue-2" ng-controller="sideNavController">
         <div class="md-toolbar-tools">
-            <md-button ng-click="openLeftMenu()">Open left Menu</md-button>
+            <md-button  class="md-icon-button" ng-click="openLeftMenu()"><i class="material-icons">menu</i></md-button>
             <h2>
-                <span>Toolbar with Disabled/Enabled Icon Buttons</span>
+                <span>Bienvenido</span>
             </h2>
             <span flex></span>
-            <md-button class="md-icon-button" aria-label="Favorite">
+            <md-button class="md-icon-button" aria-label="notificacion">
+                <i class="material-icons">add_alert</i>
             </md-button>
-            <md-button class="md-icon-button" aria-label="More">
-                <i class="material-icons md-48">accessibility</i>
+            <md-button class="md-icon-button" aria-label="configuracion">
+                <i class="material-icons">more_vert</i>
             </md-button>
         </div>
     </md-toolbar>
