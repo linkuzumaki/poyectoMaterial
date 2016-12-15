@@ -2,7 +2,7 @@
    <!-- <h1>Página Principal</h1>
     <p>{{ message }}</p>-->
     <div layout="row" layout-xs="column">
-        <div flex="100"  flex-gt-sm="15">
+        <div flex="100"  flex-gt-sm="20">
             <md-card class="md-whiteframe-8dp">
                 <md-card-header-text>
                     <md-card-title>Seleccion de elementos</md-card-title>
@@ -39,12 +39,29 @@
                                             <p class="lead element" id="parrafoh" >Vivamus sagittis lacus vel augue laoreet rutrum faucibus dolor auctor.</p>
                                         </div>
                                     </div>
-                                    <md-button crear-elementos id="elemt1" class="md-raised md-primary"><i class="material-icons md-48">format_indent_decrease</i></md-button>
+                                    <md-button crear-elementos id="elemt1" class="md-raised md-primary"><i class="material-icons md-48">format_indent_decrease</i>p</md-button>
                                 </md-list-item>
                                 <md-list-item>
-                                    <md-button crear-elementos id="elemt10" class="md-raised md-primary"><i class="material-icons md-48">font_download</i></md-button>
+                                    <div id="txtarea" style="display: none">
+                                    <div  class="form-group element areap"  >
+                                        <label for="comment" id="areatitulo" >Comment:</label>
+                                        <textarea class="form-control"  rows="5" id="comment"></textarea>
+                                    </div>
+                                    </div>
+                                    <md-button crear-elementos id="elemt10" class="md-raised md-primary"><i class="material-icons md-48">font_download</i>ar</md-button>
                                 </md-list-item>
                                 <md-list-item>
+                                    <div id="select" style="display: none">
+                                        <div class="form-group element selectP">
+                                            <label for="sel1" id="selecttitulo">Select list:</label>
+                                            <select class="form-control" id="sel1">
+                                                <option>1</option>
+                                                <option>2</option>
+                                                <option>3</option>
+                                                <option>4</option>
+                                            </select>
+                                        </div>
+                                    </div>
                                     <md-button crear-elementos id="elemt11" class="md-raised md-primary">select+</md-button>
                                 </md-list-item>
                                 <md-list-item>
@@ -59,7 +76,7 @@
                                     <div id="texbox" style="display:none" class="textoP">
                                         <div class="input-group element textoPH"  >
                                             <span class="input-group-addon textotitulo" id="ti">titulo</span>
-                                            <input type="text" class="form-control texto" id="teo" aria-describedby="basic-addon3">
+                                            <input type="text" class="form-control texto" id="teo" aria-describedby="basic-addon3" draggable="false">
                                         </div>
                                     </div>
                                     <md-button crear-elementos id="elemt3" class="md-raised md-primary">texto+</md-button>
@@ -75,12 +92,28 @@
 
                                 </md-list-item>
                                 <md-list-item>
+                                        <div  id="img" class="col-xs-6 col-md-3 imgelementP" style="display: none" >
+                                            <div ng-controller="fotoCtrl">
+                                                <a href="#" class="thumbnail element">
+                                                    <img ngf-thumbnail="picFile" class="thumb imgelementhijo" draggable="false">
+                                                </a>
+                                                <input type="file" ngf-select ng-model="picFile" name="file" accept="image/*" ngf-max-size="2MB">
+                                            </div>
+                                        </div>
                                     <md-button crear-elementos id="elemt7" class="md-raised md-primary"><i class="material-icons md-48">photo</i></md-button>
-                                </md-list-item>
+                                </md-list-item
                                 <md-list-item>
                                     <md-button crear-elementos id="elemt8" class="md-raised md-primary"><i class="material-icons md-48">photo_camera</i></md-button>
                                 </md-list-item>
                                 <md-list-item>
+                                    <div id="radio" style="display: none">
+                                        <div class="radio element radioP">
+                                            <label>
+                                                <input type="radio" name="optradio">Option 1
+                                            </label>
+                                        </div>
+                                    </div>
+
                                     <md-button crear-elementos id="elemt13" class="md-raised md-primary"><i class="material-icons md-48">check_circle</i></md-button>
                                 </md-list-item>
                                 <md-list-item>
@@ -93,14 +126,16 @@
             </md-card>
         </div>
         <div flex="100" flex-gt-sm="50" >
-            <md-card id="pizarra" class="md-whiteframe-8dp">
+            <md-card id="pizarra" layout-paddin class="md-whiteframe-8dp">
                 <md-card-header-text>
                     <md-card-title>Creacion Formulario</md-card-title>
                 </md-card-header-text>
                 <md-divider></md-divider>
-                <md-card-content ng-controller="grillaCtrl" flex layout-padding style="height:600px;overflow-y : scroll;margin: 5px" id="contpizarra"  ondragenter="return enter(event)" ondragover="return over(event)" ondragleave="return leave(event)" ondrop="return drop(event)">
-                    <div layout="row" style="padding: 0px" ng-repeat="i in getNumber(number) track by $index" id="{{$index + 1}}">
-                         <div layout="column" class="columnas" ng-repeat="i in getNumber(number) track by $index" id="col{{$index+2}}"></div>
+                <md-card-content ng-controller="grillaCtrl"  layout-padding style="height:600px;overflow-y : scroll;margin: 5px" id="contpizarra"  ondragenter="return enter(event)" ondragover="return over(event)" ondragleave="return leave(event)" ondrop="return drop(event)">
+                    <div id="grilla" style="height:300px;overflow-y : scroll;">
+                        <div layout="row" style="padding: 0px" ng-repeat="i in getNumber(number) track by $index" id="{{$index + 1}}">
+                            <div layout="column" class="columnas" ng-repeat="i in getNumber(number) track by $index" id="col{{$index+2}}"></div>
+                        </div>
                     </div>
                 </md-card-content>
             </md-card>
@@ -112,7 +147,7 @@
                 </md-card-header-text>
                 <md-divider></md-divider>
                 <md-card-content>
-                    <div layout="row"  >
+                    <div layout="row">
                         <md-button class="md-primary">Click me</md-button>
                         <md-button class="md-accent">or maybe me</md-button>
                         <md-button class="md-warn">Careful</md-button>

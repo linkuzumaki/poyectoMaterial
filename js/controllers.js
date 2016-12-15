@@ -1,5 +1,5 @@
 var contador = 0;
-var ancho,largo,posicion;
+var ancho,largo,posicion,colorfuente,fuente,size,altoElemento,anchoElemento;
 angular.module('app.controllers', [])
         .controller('mainController', function ($scope) {
             $scope.message = 'Hola, Mundo!';
@@ -68,7 +68,7 @@ angular.module('app.controllers', [])
                         scope: $scope
                     });
                 };
-                    $scope.enter=function () {
+                $scope.enter=function () {
                        /* var html3=('<div id="ElemClonado" class="textoP ng-scope">'+
                             '<div class="input-group element textoPH" id="parrafo0" style="width:100%;height:100%">'+
                             '<span class="input-group-addon textotitulo" id="titulotxtoparrafo0">titulo</span>'+
@@ -91,23 +91,122 @@ angular.module('app.controllers', [])
                      $scope.editartexto(padre);
                      */
                 }
+                $scope.editarboton=function (padre) {
+
+                    var idh1=$('#' + padre).children('.element').attr('id');
+                    var padre1 = document.getElementById(padre);
+                    var idh = document.getElementById(idh1);
+                        $scope.anchosizeelement(anchoElemento,padre1);
+                        $scope.altosizeelement(altoElemento,padre1);
+                        console.log(idh)
+                        idh.style.backgroundColor=colorfondo;
+                }
                 $scope.editartexto=function(padre) {
-                    if ($('#' + padre).children('.texto').attr("class") === 'form-control texto') {
+                    var idh1=$('#' + padre).children('.textotitulo').attr('id');
+                    var hijoid = document.getElementById(idh1);
 
                         //largo del texbox//
+
                         $scope.largotext(largo, padre);
                         // ancho del texbox
-                        $scope.anchotext(ancho, padre);
-                        // cambio posicion del titulo al textbox//
-                        $scope.posiciontext(posicion, padre);
-                        //cambio del nombre
-                        $('#' + padre).children('.textotitulo').attr('id');
-                        var idh1 = $('#' + padre).children('.textotitulo').attr('id');
-                        $('#' + idh1).text($('#nombreelemento').val());
-                        $('#' + idh1).children('.textotitulo').attr("style", "font-size:" + $('#letrasize').val() + "px");
 
-                    }
+                        $scope.anchotext(ancho, padre);
+
+                        // cambio posicion del titulo al textbox//
+
+                        $scope.posiciontext(posicion, padre);
+
+                        //cambio del nombre
+
+                        $('#' + idh1).text($('#nombreelemento').val());
+
+                        //fuente opciones
+
+                        $scope.fontfamily(fuente,hijoid);
+                        $scope.fontsize(size,hijoid);
+                        hijoid.style.color=colorfuente;
+                        hijoid.style.background=colorfondo;
+
+
                 }
+                $scope.editarimg=function (padre) {
+
+                }
+                $scope.anchosizeelement=function(size,elem){
+                    if(size==='1'){
+                        elem.style.width='100px';
+                    }
+                    if(size==='2'){
+                        elem.style.width='200px';
+                    }
+                    if(size==='3'){
+                        elem.style.width='300px';
+                    }
+                    if(size==='4'){
+                        elem.style.width='400px';
+                    }
+
+                }
+                $scope.altosizeelement=function(size,elem){
+                if(size==='1'){
+                    elem.style.height='100px';
+                }
+                if(size==='2'){
+                    elem.style.height='200px';
+                }
+                if(size==='3'){
+                    elem.style.height='300px';
+                }
+                if(size==='4'){
+                    elem.style.height='400px';
+                }
+
+            }
+                $scope.fontsize=function(size,elem){
+
+                    if(size==='0'){
+                        elem.style.size='10px';
+                    }
+                    if(size==='1'){
+                        elem.style.size='15px';
+                    }
+                    if(size==='2'){
+                        elem.style.size='18px';
+                    }
+                    if(size==='3'){
+                        elem.style.size='20px';
+                    }
+                    if(size==='4'){
+                        elem.style.size='24px';
+                    }
+                    if(size==='5'){
+                        elem.style.size='30px';
+                    }
+
+
+                }
+                $scope.fontfamily=function(fuente,elem){
+
+                    if(fuente==='1'){
+                        elem.style.fontFamily='Arial';
+                    }if(fuente==='2'){
+                        elem.style.fontFamily='Arial Black';
+                    }if(fuente==='3'){
+                        elem.style.fontFamily='Courier New';
+                    }if(fuente==='4'){
+                        elem.style.fontFamily='Georgia';
+                    }if(fuente==='5'){
+                        elem.style.fontFamily='Comic Sans MS';
+                    }if(fuente==='6'){
+                        elem.style.fontFamily='Impact';
+                    }if(fuente==='7'){
+                        elem.style.fontFamily='Times New Roman';
+                    }if(fuente==='8'){
+                        elem.style.fontFamily='Trebuchet MS';
+                    }if(fuente==='9'){
+                        elem.style.fontFamily='Verdana';
+                    }
+                };
                 $scope.largotext=function(largo,id){
                     var padre=$('#'+id).parent().attr('id');
                     var elem=document.getElementById(padre);
@@ -123,7 +222,6 @@ angular.module('app.controllers', [])
                     if(largo==='4'){
                       elem.style.width='500px';
                     }
-                   
                     
                 }
                 $scope.anchotext=function (anch,id) {
@@ -148,21 +246,35 @@ angular.module('app.controllers', [])
                         $($('#' + id).children('.textocheck')).before($('#' + id).children('.check')); //izquierda
                     }
                 }
+
                 $scope.guardarelemento = function (e) {
                     var abuelo = $('#' + idelemento).parent().attr("id");
-                    console.log('abuelo :' + abuelo);
-                    var classabuelo = $('#' + idelemento).parent().attr("class");
-                    console.log('abuelo class:' + classabuelo);
-                    var padre = $('#' + abuelo).children().attr('id');
-                    console.log('padre :' + padre);
-                    //texto
-                    $scope.editartexto(padre);
 
-                    if ($('#' + abuelo).attr("class") === 'element boton ui-resizable') {
-                        $("#" + padre).attr("value", $('#nombreelemento').val());
-                        console.log($('#' + padre).text());
-                        $('#' + padre).attr("style", "font-size:" + $('#letrasize').val() + "px");
+                    var classabuelo = $('#' + idelemento).parent().attr("class");
+
+                    var padre = $('#' + abuelo).children().attr('id');
+
+                    //texto
+                    if ($('#' + padre).children('.texto').attr("class") === 'form-control texto') {
+                        $scope.editartexto(padre);
                     }
+                    //imagen
+                    if ($('#'+padre).children('.element').attr("class")==='thumbnail element'){
+
+                    }
+                    //boton
+                    if ($('#' + abuelo).attr("class") === 'element boton grid ng-scope') {
+                       var padre= $('#' + abuelo).children('.element').attr("id");
+                         console.log(padre);
+                        $scope.editarboton(abuelo);
+
+                        // $("#" + padre).attr("value", $('#nombreelemento').val());
+                        // console.log($('#' + padre).text());
+                        // $('#' + padre).attr("style", "font-size:" + $('#letrasize').val() + "px");
+                    }
+
+
+
                     if ($('#' + padre).children('.element').attr("class") === 'lead element') {
                         $('#' + padre).children('.element').text($('#nombreelemento').val());
                         $('#' + padre).children('.element').attr("style", "font-size:" + $('#letrasize').val() + "px");
@@ -180,13 +292,15 @@ angular.module('app.controllers', [])
                         //creando la grilla
                         while (n < nc) {
                             var idrow = "fila" + hijo + n;
-                            var row='<div layout="row" style="padding: 0px" class="ng-scope layout-row" id="' + idrow + '"></div>';
-                            $('#'+hijo).append(row);
+                            var col='<div layout="column" class="columnas ng-scope layout-column" id="' + idcol + i + n + '"></div>';
+
+                            $('#'+hijo).append(col);
                            
                             for (i; i <= nf; i++) {
-                                var col='<div layout="column" class="columnas ng-scope layout-column" id="' + idcol + i + n + '"></div>';
+
+                                var row='<div layout="row" style="padding: 0px" class="ng-scope layout-row" id="' + idrow + '"></div>';
                                
-                                $('#'+idrow).append(col);
+                                $('#'+idrow).append(row);
                             }
                             console.log('padre panel :' + hijo);
                             n++;
@@ -201,6 +315,8 @@ angular.module('app.controllers', [])
         .controller('modaldatosCtrl',["$scope","$compile",function ($scope,$compile) {
 
             var abuelo = $('#' + idelemento).parent().attr("id");
+            var classabu=$('#'+abuelo).attr("class")
+            console.log('abu class : '+classabu);
             var padre = $('#' + abuelo).children().attr('id');
             $('#'+padre).children('.textotitulo').attr('id','titulotxto'+padre);
             var idh1=$('#'+padre).children('.textotitulo').attr('id');
@@ -213,6 +329,9 @@ angular.module('app.controllers', [])
 
                 $scope.verattrtexto = 'true';
                 $scope.nomb_elemento = $('#' + idh1).text();
+                //$scope.textConfig.textColor=colorfuente;
+                $scope.textConfig = {};
+
                 $scope.ancho = {
                     opcion: null,
                 }
@@ -222,44 +341,68 @@ angular.module('app.controllers', [])
                 $scope.posicion = {
                     opcion: 'izquierda'
                 }
+                $scope.fonts = {
+                    opcion: null,
+                };
+                $scope.size ={
+                    opcion:null,
+                };
+                $scope.textConfig.textColor;
                 $scope.cambio = function () {
                     ancho = $scope.ancho.opcion;
                     largo = $scope.largo.opcion;
-                    posicion = $scope.posicion.opcion
-                    $scope.elemnto();
-
+                    posicion = $scope.posicion.opcion;
+                    fuente=$scope.fonts.opcion;
+                    size=$scope.size.opcion;
+                    colorfuente= $scope.textConfig.textColor;
+                    colorfondo= $scope.textConfig.fondoColor;
                 }
+
+
+
+
             }
             if ($('#' + padre).attr("class") === 'panelP card grid _md') {
                 $scope.verattrpanel='true';
 
             }
+            if ($('#'+abuelo).attr("class") === 'element boton grid ng-scope'){
+                $scope.verattrboton = 'true';
+                $scope.textConfig = {};
+                $scope.anchoElemento = {
+                    opcion: null,
+                }
+                $scope.altoElemento = {
+                    opcion: null,
+                }
+                $scope.cambio = function () {
+                    anchoElemento = $scope.anchoElemento.opcion;
+                    altoElemento = $scope.altoElemento.opcion;
+                    colorfondo= $scope.textConfig.fondoColor;
+                }
+            }
 
         }])
-        .controller('colorCtrl', function($scope) {
-            $scope.fonts = [
-                'Arial',
-                'Arial Black',
-                'Comic Sans MS',
-                'Courier New',
-                'Georgia',
-                'Impact',
-                'Times New Roman',
-                'Trebuchet MS',
-                'Verdana'
-            ];
+        .controller('fotoCtrl', ['$scope', 'Upload', '$timeout', function ($scope, Upload, $timeout) {
+            $scope.uploadPic = function(file) {
+                file.upload = Upload.upload({
+                    url: 'https://angular-file-upload-cors-srv.appspot.com/upload',
+                    data: {username: $scope.username, file: file},
+                });
 
-            $scope.font;
-            $scope.textColor;
-            $scope.textBackground;
+                file.upload.then(function (response) {
+                    $timeout(function () {
+                        file.result = response.data;
+                    });
+                }, function (response) {
+                    if (response.status > 0)
+                        $scope.errorMsg = response.status + ': ' + response.data;
+                }, function (evt) {
+                    // Math.min is to fix IE which reports 200% sometimes
+                    file.progress = Math.min(100, parseInt(100.0 * evt.loaded / evt.total));
+                });
+            }
+        }])
 
-            $scope.scopeVariable.options = {
-                label: "Choose a color",
-                icon: "brush",
-                default: "#f00",
-                genericPalette: false,
-                history: false
-            };
 
-        })
 

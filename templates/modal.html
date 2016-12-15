@@ -6,14 +6,7 @@
         </div>
     </md-toolbar>
     <md-card-content layout-paddin style="margin: 5px">
-        <div layout="row">
-            <div class="panel panel-default"  style="width: 100%;height: 150px">
-                <button ng-click="elemnto()">ver elemnto a editar</button>
-                <div class="panel-body" id="view">
 
-                </div>
-            </div>
-        </div>
         <div layout="column" id="attrtexto" ng-show="verattrtexto"  style="width: 100%;margin:10px; padding: 5px">
 
             <div layout="row">
@@ -23,14 +16,6 @@
                 </md-input-container>
             </div>
             <div layout="row">
-                <md-input-container flex="50">
-                    <label>Ancho</label>
-                    <md-select name="opcion" ng-model="ancho.opcion" ng-change="cambio()" ng-mouseup="enter()" required  id="ancho" >
-                        <md-option value="3">pequeño</md-option>
-                        <md-option value="2">normal</md-option>
-                        <md-option value="1">grande</md-option>
-                    </md-select>
-                </md-input-container>
                 <md-input-container flex="50" >
                     <label>Largo</label>
                     <md-select name="opcion1" ng-model="largo.opcion" ng-change="cambio()" ng-mouseup="enter()" required  id="largo" >
@@ -49,7 +34,68 @@
                         <md-radio-button value="derecha"> derecha </md-radio-button>
                     </md-radio-group>
                 </container>
-                <div layout="row" md-color-picker ng-model="valueObj"></div>
+                <md-input-container flex="50" >
+                    <label>fuente</label>
+                    <md-select ng-model="fonts.opcion" >
+                        <md-option value="1">Arial</md-option>
+                        <md-option value="2">Arial Black</md-option>
+                        <md-option value="3">Courier New</md-option>
+                        <md-option value="4">Georgia</md-option>
+                        <md-option value="5">Comic Sans MS</md-option>
+                        <md-option value="6">Impact</md-option>
+                        <md-option value="7">Times New Roman</md-option>
+                        <md-option value="8">Trebuchet MS</md-option>
+                        <md-option value="9">Verdana</md-option>
+                    </md-select>
+                </md-input-container>
+                <md-input-container flex="50" >
+                    <label>tamaño fuente</label>
+                    <md-select ng-model="size.opcion" >
+                        <md-option value="0">10</md-option>
+                        <md-option value="1">15</md-option>
+                        <md-option value="2">18</md-option>
+                        <md-option value="3">20</md-option>
+                        <md-option value="4">24</md-option>
+                        <md-option value="5">30</md-option>
+                    </md-select>
+                </md-input-container>
+
+            </div>
+            <div layout="row">
+                <h4>color fuente</h4>
+                <div md-color-picker ng-model="textConfig.textColor"  ng-change="cambio()"></div>
+                <p ng-bind="textConfig.textColor"></p>
+
+                <h4>color fondo</h4>
+                <div md-color-picker ng-model="textConfig.fondoColor"  ng-change="cambio()"></div>
+                <p ng-bind="textConfig.textColor"></p>
+
+            </div>
+
+        </div>
+        <div layout="column" id="attrboton" ng-show="verattrboton" style="width: 100%;margin:10px; padding: 5px">
+            <div layout="row">
+                <md-input-container flex="50" >
+                    <label>ancho</label>
+                    <md-select name="opcion1" ng-model="anchoElemento.opcion" ng-change="cambio()" ng-mouseup="enter()" required  id="largo" >
+                        <md-option value="1">100</md-option>
+                        <md-option value="2">200</md-option>
+                        <md-option value="3">300</md-option>
+                        <md-option value="4">400</md-option>
+                    </md-select>
+                </md-input-container>
+                <md-input-container flex="50" >
+                    <label>alto</label>
+                    <md-select name="opcion1" ng-model="altoElemento.opcion" ng-change="cambio()" ng-mouseup="enter()" required  id="largo" >
+                        <md-option value="1">100</md-option>
+                        <md-option value="2">200</md-option>
+                        <md-option value="3">300</md-option>
+                        <md-option value="4">400</md-option>
+                    </md-select>
+                </md-input-container>
+                <h4>color fondo</h4>
+                <div md-color-picker ng-model="textConfig.fondoColor"  ng-change="cambio()"></div>
+
             </div>
         </div>
         <div layout="column" id="attrpanel" ng-show="verattrpanel">

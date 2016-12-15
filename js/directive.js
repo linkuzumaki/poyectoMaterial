@@ -10,8 +10,9 @@ angular.module('app.directive', [])
         scope:{},
         link: function(scope, element, attrs, controller) {
             element.bind("click",function(e) {
-                console.log('directiva');
+                console.log(' entro directiva');
                 var id = e.target.id;// obtengo la id elemento del bar
+                console.log('id target  '+id);
                 var idelemento;
                 if (id === 'elemt1') {
                     idelemento = 'parrafos'; //id del elemento
@@ -32,18 +33,40 @@ angular.module('app.directive', [])
                     idelemento = 'panel';
 
                 }
+                if (id === 'elemt7') {
+                    idelemento = 'img';
+                }
+                if (id === 'elemt10') {
+                    idelemento = 'txtarea';
+                }
+                if (id === 'elemt11') {
+                    idelemento = 'select';
+                }
+                if (id === 'elemt13') {
+                    idelemento = 'radio';
+                }
+                console.log('id a clonar  id :  '+ idelemento);
                 var elemento = document.getElementById(idelemento); // id elemento
-                console.log('directiva e'+elemento)
                 var copy = $(elemento).clone(true);//se crea un clon  del elemento
                 //se edita los atributos de objeto  clonado
                 $(copy).attr("id", "ElemClonado" + contador);
-                $(copy).children('.element').attr("id", "parrafo" + contador);// crea la id  para  el hijo con clase element
+                $(copy).children('.element').attr("id", "hijo" + contador);// crea la id  para  el hijo con clase element
                 //se agregan atributos al clon
                 $(copy).children('.element').attr("style", "width:100%;height:100%");
                 $(copy).attr("ondragstart", "start(event)");
                 $(copy).attr("ondragend", "end(event)");
+                if(idelemento==='img'){
+                    $(copy).children('.element').attr("draggable","false")
+                }
+                if(idelemento==='txtarea'){
+
+                }
+                if(idelemento==='boton'){
+                    $(copy).children('.element').attr('style',"width:100%;height:80%");
+                }
                 if (idelemento !== 'panel') {
-                    $(copy).attr("style", "display:show;width:150px");
+                    $(copy).attr("style", "display:show;width:150px;");
+
                 } else {
                     $(copy).attr("style", "display:show;width: 100%;padding-top: 0px;padding-bottom: 0px;margin-top: 0px; " +
                         "margin-bottom: 0px;");
@@ -62,7 +85,7 @@ angular.module('app.directive', [])
                 $(copy).children('.delete-button').attr("id", "eliminar" + contador);
                 $(copy).children('.delete-button').attr("ng-click", "eliminar()");//se agrega el evento eliminar  despues de agregar el boton al clon
                 $(copy).children('.editar-button').attr("id", "editar" + contador);
-                $(copy).children('.editar-button').attr("ng-click", "clickToOpen()");
+                $(copy).children('.editar-button').attr("ng-click", "clickToOpen(e)");
                 $(copy).children('.crear-button').attr("id", "crear" + contador);
                 $(copy).children('.crear-button').attr("ng-click", "crear(e)");
                 angular.element(document.getElementById('contpizarra'))

@@ -22,10 +22,10 @@ function leave(e) {
 
 function over(e) {
   var elemArrastrable = e.dataTransfer.getData("Data"); // Elemento arrastrado
-  var id = e.target.id; // id del Elemento sobre el que se arrastra
-  clase =$('#'+id).attr('class');// clase del elemento sobre que se arrastra
-  console.log('clase : '+clase);
-  // return false para que se pueda soltar
+    //id=e.target.id
+  clase = e.target.className; // id del Elemento sobre el que se arrastra
+ console.log(clase);
+  //return false para que se pueda soltar
 
   /*if (id === 'contpizarra'){
     return false; // En la pizarra se puede soltar cualquier
