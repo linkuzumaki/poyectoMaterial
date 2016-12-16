@@ -35,9 +35,10 @@
                                 </md-list-item>
                                 <md-list-item >
                                     <div id="parrafos" style="display:none" ng-controller="ModalCtrl">
-                                        <div class="input-group element parrafoPH" >
-                                            <p class="lead element" id="parrafoh" >Vivamus sagittis lacus vel augue laoreet rutrum faucibus dolor auctor.</p>
-                                        </div>
+                                        <md-content flex layout-padding class="input-group element parrafoPH" >
+                                            <p class="lead element"  id="parrafoh" draggable="false" ng-modal="elemento.parrafo">
+                                                Lorem ipsum dolor sit amet, ne quod novum mei.</p>
+                                        </md-content>
                                     </div>
                                     <md-button crear-elementos id="elemt1" class="md-raised md-primary"><i class="material-icons md-48">format_indent_decrease</i>p</md-button>
                                 </md-list-item>
@@ -84,7 +85,7 @@
                                 <md-list-item>
                                     <div id="check" style="display:none" class="textoP" ng-controller="ModalCtrl">
                                         <div class="input-group element" >
-                                            <span class="input-group-addon check "><input type="checkbox" aria-label="..." ></span>
+                                            <span class="input-group-addon check"><input type="checkbox" aria-label="..." ></span>
                                             <input type="text" class="form-control textocheck" aria-label="..." >
                                         </div>
                                     </div>

@@ -1,10 +1,14 @@
 var contador = 0;
-var ancho,largo,posicion,colorfuente,fuente,size,altoElemento,anchoElemento;
+var ancho,largo,posicion,colorfuente,fuente,size,altoElemento,anchoElemento,texto, alignvalor="";
 angular.module('app.controllers', [])
         .controller('mainController', function ($scope) {
             $scope.message = 'Hola, Mundo!';
         })
         .controller('aboutController', function ($scope) {
+            $scope.ver=function(){
+
+                alert('Esta es la página "Acerca de');
+            }
             $scope.message = 'Esta es la página "Acerca de"';
         })
         .controller('contactController', function ($scope) {
@@ -98,8 +102,11 @@ angular.module('app.controllers', [])
                     var idh = document.getElementById(idh1);
                         $scope.anchosizeelement(anchoElemento,padre1);
                         $scope.altosizeelement(altoElemento,padre1);
+                        $scope.fontsize(size,idh);
                         console.log(idh)
                         idh.style.backgroundColor=colorfondo;
+                        $('#' +idh1).val($('#nomboton').val());
+
                 }
                 $scope.editartexto=function(padre) {
                     var idh1=$('#' + padre).children('.textotitulo').attr('id');
@@ -128,6 +135,46 @@ angular.module('app.controllers', [])
                         hijoid.style.background=colorfondo;
 
 
+                }
+                $scope.editarparrafo=function(padre){
+
+                    var idh1=$('#' + padre).children('.element').attr('id');
+                    var hijoid = document.getElementById(idh1);
+
+                    var id=$scope.elemento.parrafo.id;
+
+                    hijoid.style.color=$scope.textConfig.textcolor;
+                    hijoid.style.fontSize=$scope.font_size.opcion;
+                    hijoid.style.textAlign= alignvalor;
+                    hijoid.style.fontFamily= $scope.fonts.opcion;
+                    hijoid.style.height='150px';
+                    hijoid.style.width='200px';
+
+                }
+                $scope.alignjustificar=function(){
+                   alignvalor='justify';
+                }
+                $scope.aligncentrar=function(){
+                    alignvalor='center';
+                }
+                $scope.alignderecha=function(){
+                    alignvalor='right';
+                }
+                $scope.alignizquierda=function(){
+                    alignvalor='left';
+                }
+
+            $scope.editarcheck=function (padre) {
+
+                    idh1=$('#' + padre).children('.check').attr('id');
+                    var hijoid = document.getElementById(idh1);
+
+                    $scope.largotext(largo, padre);
+                    $scope.anchotext(ancho, padre);
+                    $scope.posiciontext(posicion, padre);
+
+                    //fuente opciones
+                    hijoid.style.background=colorfondo;
                 }
                 $scope.editarimg=function (padre) {
 
@@ -165,22 +212,22 @@ angular.module('app.controllers', [])
                 $scope.fontsize=function(size,elem){
 
                     if(size==='0'){
-                        elem.style.size='10px';
+                        elem.style.fontSize='10px';
                     }
                     if(size==='1'){
-                        elem.style.size='15px';
+                        elem.style.fontSize='15px';
                     }
                     if(size==='2'){
-                        elem.style.size='18px';
+                        elem.style.fontSize='18px';
                     }
                     if(size==='3'){
-                        elem.style.size='20px';
+                        elem.style.fontSize='20px';
                     }
                     if(size==='4'){
-                        elem.style.size='24px';
+                        elem.style.fontSize='24px';
                     }
                     if(size==='5'){
-                        elem.style.size='30px';
+                        elem.style.fontSize='30px';
                     }
 
 
@@ -246,12 +293,9 @@ angular.module('app.controllers', [])
                         $($('#' + id).children('.textocheck')).before($('#' + id).children('.check')); //izquierda
                     }
                 }
-
                 $scope.guardarelemento = function (e) {
                     var abuelo = $('#' + idelemento).parent().attr("id");
-
                     var classabuelo = $('#' + idelemento).parent().attr("class");
-
                     var padre = $('#' + abuelo).children().attr('id');
 
                     //texto
@@ -265,20 +309,16 @@ angular.module('app.controllers', [])
                     //boton
                     if ($('#' + abuelo).attr("class") === 'element boton grid ng-scope') {
                        var padre= $('#' + abuelo).children('.element').attr("id");
-                         console.log(padre);
+                        console.log(padre);
                         $scope.editarboton(abuelo);
-
-                        // $("#" + padre).attr("value", $('#nombreelemento').val());
-                        // console.log($('#' + padre).text());
-                        // $('#' + padre).attr("style", "font-size:" + $('#letrasize').val() + "px");
                     }
-
-
-
+                    //parrafo
                     if ($('#' + padre).children('.element').attr("class") === 'lead element') {
-                        $('#' + padre).children('.element').text($('#nombreelemento').val());
-                        $('#' + padre).children('.element').attr("style", "font-size:" + $('#letrasize').val() + "px");
+
+                        $scope.editarparrafo(padre);
+                        alignvalor="";
                     }
+                    //panel
                     if ($('#' + padre).attr("class") === 'panelP card grid _md') {
 
                         var id = $('#'+padre).children('.panelbody').attr('id',"panelb" + contador);
@@ -292,23 +332,25 @@ angular.module('app.controllers', [])
                         //creando la grilla
                         while (n < nc) {
                             var idrow = "fila" + hijo + n;
-                            var col='<div layout="column" class="columnas ng-scope layout-column" id="' + idcol + i + n + '"></div>';
-
-                            $('#'+hijo).append(col);
+                             var row='<div layout="row" style="padding: 0px" class="ng-scope layout-row" id="' + idrow + '"></div>';
+                            $('#'+hijo).append(row);
                            
                             for (i; i <= nf; i++) {
 
-                                var row='<div layout="row" style="padding: 0px" class="ng-scope layout-row" id="' + idrow + '"></div>';
-                               
-                                $('#'+idrow).append(row);
+                                var col='<div layout="column" class="columnas ng-scope layout-column" id="' + idcol + i + n + '"></div>';
+                                $('#'+idrow).append(col);
                             }
                             console.log('padre panel :' + hijo);
                             n++;
                             i = 1;
                         }
-                        console.log('entre al panel')
+                    }
+                    //check
+                    if ($('#'+padre).attr("class") === 'input-group element'){
+                        $scope.editarcheck(padre);
                     }
                     console.log($('#' + idelemento).text());
+
                     ngDialog.closeAll();
                 };
             }])
@@ -316,38 +358,73 @@ angular.module('app.controllers', [])
 
             var abuelo = $('#' + idelemento).parent().attr("id");
             var classabu=$('#'+abuelo).attr("class")
-            console.log('abu class : '+classabu);
             var padre = $('#' + abuelo).children().attr('id');
+
+            //cambio id del hijo texto
             $('#'+padre).children('.textotitulo').attr('id','titulotxto'+padre);
+            //cambio id hijo parrafo
+            $('#'+padre).children('.element').attr('id','textoparrafo'+padre);
+
+
+
             var idh1=$('#'+padre).children('.textotitulo').attr('id');
 
-
+            $scope.textConfig = {};
+            $scope.ancho = {
+                opcion: null,
+            }
+            $scope.largo = {
+                opcion: null,
+            }
+            $scope.posicion = {
+                opcion: 'izquierda'
+            }
+            $scope.fonts = {
+                opcion: null,
+            };
+            $scope.size ={
+                opcion:null,
+            };
+            $scope.textConfig = {
+                options:{
+                    label: "color fuente",
+                    icon: "brush",
+                    default: "#000000",
+                    genericPalette: false,
+                    history: false
+                },
+                options1:{
+                    label: "color fondo",
+                    icon: "brush",
+                    default: "rgb(205, 205, 205)",
+                    genericPalette: false,
+                    history: false
+                }
+            };
+            $scope.anchoElemento = {
+                opcion: null,
+            }
+            $scope.altoElemento = {
+                opcion: null,
+            }
+            $scope.texto={};
+            $scope.users = [
+                { id: 1, name: 'Bob' },
+                { id: 2, name: 'Alice' },
+                { id: 3, name: 'Steve' }
+            ];
+            $scope.selectedUser = { id: 1, name: 'Bob' };
 
             // obtengo los valores de los atributos del elemento texbox//
-
+            //     textbox
             if ($('#' + padre).children('.texto').attr("class") === 'form-control texto') {
-
+                $scope.elemento={}//para guardar todo las modif segun la id trabajr en eso despues
                 $scope.verattrtexto = 'true';
                 $scope.nomb_elemento = $('#' + idh1).text();
                 //$scope.textConfig.textColor=colorfuente;
-                $scope.textConfig = {};
 
-                $scope.ancho = {
-                    opcion: null,
-                }
-                $scope.largo = {
-                    opcion: null,
-                }
-                $scope.posicion = {
-                    opcion: 'izquierda'
-                }
-                $scope.fonts = {
-                    opcion: null,
-                };
-                $scope.size ={
-                    opcion:null,
-                };
                 $scope.textConfig.textColor;
+                $scope.textConfig.fondoColor;
                 $scope.cambio = function () {
                     ancho = $scope.ancho.opcion;
                     largo = $scope.largo.opcion;
@@ -357,31 +434,74 @@ angular.module('app.controllers', [])
                     colorfuente= $scope.textConfig.textColor;
                     colorfondo= $scope.textConfig.fondoColor;
                 }
-
-
-
-
             }
+            //panel
             if ($('#' + padre).attr("class") === 'panelP card grid _md') {
                 $scope.verattrpanel='true';
-
             }
+            //boton
             if ($('#'+abuelo).attr("class") === 'element boton grid ng-scope'){
                 $scope.verattrboton = 'true';
-                $scope.textConfig = {};
-                $scope.anchoElemento = {
-                    opcion: null,
-                }
-                $scope.altoElemento = {
-                    opcion: null,
-                }
+                $scope.nomb_elementobtn= $('#' + padre).val();
+                $scope.textConfig.textColor;
+                $scope.textConfig.fondoColor;
                 $scope.cambio = function () {
                     anchoElemento = $scope.anchoElemento.opcion;
                     altoElemento = $scope.altoElemento.opcion;
                     colorfondo= $scope.textConfig.fondoColor;
+                    size=$scope.size.opcion;
+                    fuente=$scope.fonts.opcion;
                 }
             }
+            //check
+            if ($('#'+padre).attr("class") === 'input-group element'){
+                $scope.verattrcheck = 'true';
 
+                $scope.textConfig.textColor;
+                $scope.textConfig.fondoColor;
+                $scope.cambio = function () {
+                    ancho = $scope.ancho.opcion;
+                    largo = $scope.largo.opcion;
+                    posicion = $scope.posicion.opcion;
+                    colorfondo= $scope.textConfig.fondoColor;
+                }
+            }
+            //parrafo
+            if ($('#'+padre).attr("class") === 'input-group element parrafoPH layout-padding _md flex'){
+                var idh1=$('#' + padre).children('.element').attr('id');
+
+                console.log('hijo parrafo'+idh1)
+                var hijoid = document.getElementById(idh1);
+                $scope.elemento={
+                    parrafo :{}
+                }
+                $scope.modal={
+                    textConfig :{}
+                }
+                $scope.font_size={
+                    opcion:null,
+                }
+
+                $scope.verattrparrafo = 'true';
+
+                $scope.elemento.parrafo.id=$('#' + idh1).attr('id');
+                $scope.elemento.parrafo.valor=$('#' + idh1).text();
+                $scope.elemento.parrafo.color=$('#' + idh1).css('color')
+                $scope.elemento.parrafo.font_size=$('#' + idh1).css('font-size');
+                $scope.elemento.parrafo.font_family=$('#' + idh1).css('font-family');
+                console.log($scope.elemento.parrafo.font_family);
+                $scope.modal.nomb_elemento=$scope.elemento.parrafo.valor;
+                $scope.textConfig.textcolor= $scope.elemento.parrafo.color;
+                $scope.font_size.opcion= $scope.elemento.parrafo.font_size;
+                $scope.fonts.opcion= $scope.elemento.parrafo.font_family;
+                console.log($scope.elemento);
+                $scope.cambio = function () {
+                    $scope.fonts.opcion;
+                    $scope.textConfig.textcolor;
+                    $scope.font_size.opcion
+                    $scope.modal.nomb_elemento
+                }
+            }
         }])
         .controller('fotoCtrl', ['$scope', 'Upload', '$timeout', function ($scope, Upload, $timeout) {
             $scope.uploadPic = function(file) {

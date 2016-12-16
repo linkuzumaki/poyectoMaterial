@@ -12,9 +12,8 @@
      .config(function($mdThemingProvider) {
          $mdThemingProvider.theme('default')
 
-             .primaryPalette('blue',{
-                 'default': '500'
-
+             .primaryPalette('purple',{
+                 'default': '400'
             })
              .accentPalette('indigo',{
                  'default':'A200'

@@ -14,6 +14,8 @@ angular.module('app.directive', [])
                 var id = e.target.id;// obtengo la id elemento del bar
                 console.log('id target  '+id);
                 var idelemento;
+
+
                 if (id === 'elemt1') {
                     idelemento = 'parrafos'; //id del elemento
                 }
@@ -45,20 +47,25 @@ angular.module('app.directive', [])
                 if (id === 'elemt13') {
                     idelemento = 'radio';
                 }
+
                 console.log('id a clonar  id :  '+ idelemento);
                 var elemento = document.getElementById(idelemento); // id elemento
                 var copy = $(elemento).clone(true);//se crea un clon  del elemento
                 //se edita los atributos de objeto  clonado
                 $(copy).attr("id", "ElemClonado" + contador);
                 $(copy).children('.element').attr("id", "hijo" + contador);// crea la id  para  el hijo con clase element
-                //se agregan atributos al clon
                 $(copy).children('.element').attr("style", "width:100%;height:100%");
                 $(copy).attr("ondragstart", "start(event)");
                 $(copy).attr("ondragend", "end(event)");
+
                 if(idelemento==='img'){
                     $(copy).children('.element').attr("draggable","false")
                 }
-                if(idelemento==='txtarea'){
+                if(idelemento==='parrafos'){
+
+                }
+                if (idelemento==='check'){
+
 
                 }
                 if(idelemento==='boton'){
@@ -78,6 +85,7 @@ angular.module('app.directive', [])
                 if (idelemento !== 'texbox' && idelemento !== 'check' && idelemento !== 'parrafos' && idelemento !== 'panel') {
                     //$(copy).resizable();
                 }
+
                 $(copy).clone(true, true);// se confirma que los eventos y atributos esten activos
                 $(borrarHtml).appendTo(copy);//se agrega el btn eleminar
                 $(editarHtml).appendTo(copy);//se agrega el btn editar
