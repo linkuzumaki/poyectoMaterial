@@ -6,9 +6,11 @@ var agregarHtml = ("<button ng-controller='EventoElementCtrl' class='crear-butto
 angular.module('app.directive', [])
 
 .directive('crearElementos',function($compile){
+
     return {
         scope:{},
         link: function(scope, element, attrs, controller) {
+            scope.inputElement=[{elemento:{id:'hola'}}];
             element.bind("click",function(e) {
                 console.log(' entro directiva');
                 var id = e.target.id;// obtengo la id elemento del bar
@@ -49,6 +51,7 @@ angular.module('app.directive', [])
                 }
 
                 console.log('id a clonar  id :  '+ idelemento);
+
                 var elemento = document.getElementById(idelemento); // id elemento
                 var copy = $(elemento).clone(true);//se crea un clon  del elemento
                 //se edita los atributos de objeto  clonado
@@ -69,13 +72,14 @@ angular.module('app.directive', [])
 
                 }
                 if(idelemento==='boton'){
-                    $(copy).children('.element').attr('style',"width:100%;height:80%");
+                    //$(copy).attr('style',"width:100px !important ;height:80px !important");
+                    //$(copy).children('.element').attr('style',"width:100%;height:80%");
                 }
-                if (idelemento !== 'panel') {
-                    $(copy).attr("style", "display:show;width:150px;");
+                if (idelemento == 'panel' && idelemento !== 'check') {
+                   $(copy).attr("style", "display:show;width:150px;height:100px");
 
                 } else {
-                    $(copy).attr("style", "display:show;width: 100%;padding-top: 0px;padding-bottom: 0px;margin-top: 0px; " +
+                    $(copy).attr("style", "display:show;width: 100px;padding-top: 0px;padding-bottom: 0px;margin-top: 0px; " +
                         "margin-bottom: 0px;");
                     $(copy).children('.panelP').attr('id', "panelP" + contador);
         
@@ -83,7 +87,7 @@ angular.module('app.directive', [])
                 $(copy).attr("draggable", true);
                 // el elemento tipo text y check no tienen  el resisable
                 if (idelemento !== 'texbox' && idelemento !== 'check' && idelemento !== 'parrafos' && idelemento !== 'panel') {
-                    //$(copy).resizable();
+                   // $(copy).resizable();
                 }
 
                 $(copy).clone(true, true);// se confirma que los eventos y atributos esten activos
@@ -96,6 +100,8 @@ angular.module('app.directive', [])
                 $(copy).children('.editar-button').attr("ng-click", "clickToOpen(e)");
                 $(copy).children('.crear-button').attr("id", "crear" + contador);
                 $(copy).children('.crear-button').attr("ng-click", "crear(e)");
+
+
                 angular.element(document.getElementById('contpizarra'))
                     .append($compile(copy)(scope));
 

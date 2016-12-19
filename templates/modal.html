@@ -94,38 +94,28 @@
             <div layout="row">
                 <md-input-container flex="50" >
                     <label>tamaño fuente</label>
-                    <md-select ng-model="size.opcion" >
-                        <md-option value="0">10</md-option>
-                        <md-option value="1">15</md-option>
-                        <md-option value="2">18</md-option>
-                        <md-option value="3">20</md-option>
-                        <md-option value="4">24</md-option>
-                        <md-option value="5">30</md-option>
-                    </md-select>
+                    <input required name="font_size" ng-model="font_size.opcion" id="botonsizemodal">
                 </md-input-container>
             </div>
             <div layout="row">
-
                 <md-input-container flex="50" >
-                    <label>ancho</label>
-                    <md-select name="opcion1" ng-model="anchoElemento.opcion" ng-change="cambio()" ng-mouseup="enter()" required  id="largo" >
-                        <md-option value="1">100</md-option>
-                        <md-option value="2">200</md-option>
-                        <md-option value="3">300</md-option>
-                        <md-option value="4">400</md-option>
+                    <label>Ancho elemento</label>
+                    <md-select ng-model="anchoelement" ng-model-options="{trackBy: '$value.id'}">
+                        <md-option ng-value="anchobtn" ng-repeat="anchobtn in widthbuton">{{ anchobtn.width }}</md-option>
                     </md-select>
+
                 </md-input-container>
                 <md-input-container flex="50" >
-                    <label>alto</label>
-                    <md-select name="opcion1" ng-model="altoElemento.opcion" ng-change="cambio()" ng-mouseup="enter()" required  id="largo" >
-                        <md-option value="1">100</md-option>
-                        <md-option value="2">200</md-option>
-                        <md-option value="3">300</md-option>
-                        <md-option value="4">400</md-option>
+                    <label>Alto elemento</label>
+                    <md-select ng-model="altoelement" ng-model-options="{trackBy: '$value.id'}">
+                        <md-option ng-value="altobtn" ng-repeat="altobtn in heightbuton">{{ altobtn.height }}</md-option>
                     </md-select>
-                </md-input-container>
-                <div md-color-picker="textConfig.options1" ng-model="textConfig.fondoColor"  ng-change="cambio()"></div>
 
+                </md-input-container>
+            </div>
+            <div layout="row">
+                <div md-color-picker="textConfig.optionsf" ng-model="textConfig.textcolor"  ng-change="cambio()"></div>
+                <div md-color-picker="textConfig.optionsb" ng-model="textConfig.colorfondo"  ng-change="cambio()"></div>
             </div>
         </div>
         <div layout="column" id="attrpanel" ng-show="verattrpanel">
@@ -137,27 +127,23 @@
         <div layout="column" id="attrcheck" ng-show="verattrcheck" style="width: 100%;margin:10px; padding: 5px">
 
                 <div layout="row">
-                    <md-input-container flex="50">
-                        <label>Largo</label>
-                        <md-select name="opcion1" ng-model="largo.opcion" ng-change="cambio()" ng-mouseup="enter()"
-                                   required id="largo3">
-                            <md-option value="1">25</md-option>
-                            <md-option value="2">50</md-option>
-                            <md-option value="3">75</md-option>
-                            <md-option value="4">100</md-option>
+                    <md-input-container flex="50" >
+                        <label>Largo elemento</label>
+                        <md-select ng-model="largoelemento"  ng-change="cambio()">
+                            <md-option ng-value="largocheck" ng-repeat="largocheck in widthcheck">{{ largocheck.width }}</md-option>
                         </md-select>
                     </md-input-container>
-                    <md-input-container flex="50">
-                        <label>Ancho</label>
-                        <md-select name="opcion1" ng-model="ancho.opcion" ng-change="cambio()" ng-mouseup="enter()"
-                                   required id="ancho3">
-                            <md-option value="1">grande</md-option>
-                            <md-option value="2">normal</md-option>
-                            <md-option value="3">pequeño</md-option>
-
+                    <md-input-container flex="50" >
+                        <label>Ancho elemento</label>
+                        <md-select ng-model="anchoelegido"  ng-change="cambio()">
+                            <md-option ng-value="anchocheck" ng-repeat="anchocheck in anchotexto">{{ anchocheck.name }}</md-option>
                         </md-select>
+
                     </md-input-container>
 
+                </div>
+
+                <div layout="row">
                     <container flex="50">
                         <p>posicion:</p>
                         <md-radio-group ng-model="posicion.opcion" ng-change="cambio()" ng-mouseup="enter()">
@@ -165,9 +151,7 @@
                             <md-radio-button value="derecha"> derecha</md-radio-button>
                         </md-radio-group>
                     </container>
-                </div>
-                <div layout="row">
-                    <div md-color-picker="textConfig.options1" ng-model="textConfig.fondoColor"  ng-change="cambio()"></div>
+                    <div md-color-picker="textConfig.optionsb" ng-model="textConfig.colorfondo"  ng-change="cambio()"></div>
 
                 </div>
 
@@ -202,8 +186,8 @@
             <div layout="row">
                 <md-input-container flex="50" >
                     <label>fuente</label>
-                    <md-select ng-model="selectedUser">
-                        <md-option ng-value="user" ng-repeat="user in users">{{ user.name }}</md-option>
+                    <md-select ng-model="familiaelegida" ng-model-options="{trackBy: '$value.id'}">
+                        <md-option ng-value="user" ng-repeat="user in fontfamilia">{{ user.name }}</md-option>
                     </md-select>
 
                 </md-input-container>
@@ -214,7 +198,7 @@
                 </md-input-container>
             </div>
             <div layout="row">
-                <div md-color-picker="textConfig.options" ng-model="textConfig.textcolor"  ng-change="cambio()"></div>
+                <div md-color-picker="textConfig.optionsf" ng-model="textConfig.textcolor"  ng-change="cambio()"></div>
             </div>
         </div>
 
