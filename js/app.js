@@ -4,6 +4,7 @@
      'ngMessages',
      'ngRoute',
      'app.routes',
+     'app.service',
      'app.controllers',
      'app.directive',
      'ngDialog',

@@ -17,7 +17,6 @@ angular.module('app.directive', [])
                 console.log('id target  '+id);
                 var idelemento;
 
-
                 if (id === 'elemt1') {
                     idelemento = 'parrafos'; //id del elemento
                 }
@@ -63,23 +62,40 @@ angular.module('app.directive', [])
 
                 if(idelemento==='img'){
                     $(copy).children('.element').attr("draggable","false")
+                    $(copy).attr("style", "display:show;width: 200px;padding-left: 0px;padding-right: 0px;");
+
+                }
+                if(idelemento==='txtarea'){
+                    $(copy).children('.element').attr("draggable","false")
+                    $(copy).attr("style", "display:show;");
+
+                }
+                if(idelemento==='select'){
+                    $(copy).children('.element').attr("draggable","false")
+                    $(copy).attr("style", "display:show;");
+
+                }
+                if(idelemento==='texbox'){
+                    $(copy).attr("style", "display:show;width: 100px;padding-top: 0px;padding-bottom: 0px;margin-top: 0px; " +
+                        "margin-bottom: 0px;");
+
                 }
                 if(idelemento==='parrafos'){
+                    $(copy).attr("style", "display:show;");
 
                 }
                 if (idelemento==='check'){
-
+                    $(copy).attr("style", "display:show;width: 100px;padding-top: 0px;padding-bottom: 0px;margin-top: 0px; " +
+                        "margin-bottom: 0px;");
 
                 }
                 if(idelemento==='boton'){
+                    $(copy).attr("style", "display:show;width:150px;height:100px");
                     //$(copy).attr('style',"width:100px !important ;height:80px !important");
                     //$(copy).children('.element').attr('style',"width:100%;height:80%");
                 }
-                if (idelemento == 'panel' && idelemento !== 'check') {
-                   $(copy).attr("style", "display:show;width:150px;height:100px");
-
-                } else {
-                    $(copy).attr("style", "display:show;width: 100px;padding-top: 0px;padding-bottom: 0px;margin-top: 0px; " +
+                if (idelemento === 'panel' ){
+                    $(copy).attr("style", "display:show;width:100%;padding-top: 0px;padding-bottom: 0px;margin-top: 0px; " +
                         "margin-bottom: 0px;");
                     $(copy).children('.panelP').attr('id', "panelP" + contador);
         
@@ -102,13 +118,38 @@ angular.module('app.directive', [])
                 $(copy).children('.crear-button').attr("ng-click", "crear(e)");
 
 
-                angular.element(document.getElementById('contpizarra'))
+                angular.element(document.getElementById('fila110'))
                     .append($compile(copy)(scope));
 
                 contador += 1;
             })
         }
     }
+
+})
+
+
+.directive('fileInput',function($parse){
+    return {
+        restrict: "EA",
+        template: "<input type='file' />",
+        replace: true,
+        link: function (scope, element, attrs) {
+
+            var modelGet = $parse(attrs.fileInput);
+            var modelSet = modelGet.assign;
+            var onChange = $parse(attrs.onChange);
+
+            var updateModel = function () {
+                scope.$apply(function () {
+                    modelSet(scope, element[0].files[0]);
+                    onChange(scope);
+                });
+            };
+
+            element.bind('change', updateModel);
+        }
+    };
 
 })
 

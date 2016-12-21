@@ -19,7 +19,7 @@
                                 </md-list-item>
                                 <md-list-item >
                                     <div id="panel" style="display: none">   
-                                        <md-card id="panelPadre" class="panelP card grid">
+                                        <md-card class="panelP card grid">
                                             <md-card-header id="panelheader">
                                                 <md-card-header-text>
                                                     <span class="md-title">Panel</span>
@@ -56,10 +56,8 @@
                                         <div class="form-group element selectP">
                                             <label for="sel1" id="selecttitulo">Select list:</label>
                                             <select class="form-control" id="sel1">
-                                                <option>1</option>
-                                                <option>2</option>
-                                                <option>3</option>
-                                                <option>4</option>
+                                                <option ng-repeat="altobtn in datos"></option>
+
                                             </select>
                                         </div>
                                     </div>
@@ -75,7 +73,7 @@
                             <md-list flex>
                                 <md-list-item>
                                     <div id="texbox" style="display:none" class="textoP">
-                                        <div class="input-group element textoPH"  >
+                                        <div class="input-group element"  >
                                             <span class="input-group-addon textotitulo" id="ti">titulo</span>
                                             <input type="text" class="form-control texto" id="teo" aria-describedby="basic-addon3" draggable="false">
                                         </div>
@@ -94,15 +92,12 @@
                                 </md-list-item>
                                 <md-list-item>
                                         <div  id="img" class="col-xs-6 col-md-3 imgelementP" style="display: none" >
-                                            <div ng-controller="fotoCtrl">
-                                                <a href="#" class="thumbnail element">
-                                                    <img ngf-thumbnail="picFile" class="thumb imgelementhijo" draggable="false">
-                                                </a>
-                                                <input type="file" ngf-select ng-model="picFile" name="file" accept="image/*" ngf-max-size="2MB">
+                                            <div  class="thumbnail element" style="width: 100%;height: 100%;margin-bottom: 0px;">
+                                                <img src="img/img-no-disponible.jpg" class="thumb" draggable="false" style="width: 100%;height: 100%;">
                                             </div>
                                         </div>
                                     <md-button crear-elementos id="elemt7" class="md-raised md-primary"><i class="material-icons md-48">photo</i></md-button>
-                                </md-list-item
+                                </md-list-item>
                                 <md-list-item>
                                     <md-button crear-elementos id="elemt8" class="md-raised md-primary"><i class="material-icons md-48">photo_camera</i></md-button>
                                 </md-list-item>
@@ -132,13 +127,11 @@
                     <md-card-title>Creacion Formulario</md-card-title>
                 </md-card-header-text>
                 <md-divider></md-divider>
-                <md-card-content ng-controller="grillaCtrl"  layout-padding style="height:600px;overflow-y : scroll;margin: 5px" id="contpizarra"  ondragenter="return enter(event)" ondragover="return over(event)" ondragleave="return leave(event)" ondrop="return drop(event)">
-                    <div id="grilla" style="height:300px;overflow-y : scroll;">
-                        <div layout="row" style="padding: 0px" ng-repeat="i in getNumber(number) track by $index" id="{{$index + 1}}">
-                            <div layout="column" class="columnas" ng-repeat="i in getNumber(number) track by $index" id="col{{$index+2}}"></div>
-                        </div>
-                    </div>
+                <md-card-content ng-controller="grillaCtrl"  layout-padding  id="contpizarra"  ondragenter="return enter(event)" ondragover="return over(event)" ondragleave="return leave(event)" ondrop="return drop(event)">
+
                 </md-card-content>
+
+
             </md-card>
         </div>
         <div flex="100" flex-gt-sm="25">
@@ -155,6 +148,7 @@
                       <!--  <div md-color-picker ng-model="valueObj"></div>-->
 
                     </div>
+
                 </md-card-content>
             </md-card>
         </div>

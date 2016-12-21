@@ -1,21 +1,21 @@
 var contador = 0;
-var guardarcont=0
-var ancho,largo,posicion,colorfuente,fuente,size,altoElemento,anchoElemento,texto,colorfondo, alignvalor="";
+var alignvalor="";
+var imgsave
 angular.module('app.controllers', [])
-        .controller('mainController', function ($scope) {
+    .controller('mainController', function ($scope) {
             $scope.message = 'Hola, Mundo!';
         })
-        .controller('aboutController', function ($scope) {
+    .controller('aboutController', function ($scope) {
             $scope.ver=function(){
 
                 alert('Esta es la página "Acerca de');
             }
             $scope.message = 'Esta es la página "Acerca de"';
         })
-        .controller('contactController', function ($scope) {
+    .controller('contactController', function ($scope) {
             $scope.message = 'Esta es la página de "Contacto", aquí podemos poner un formulario';
         })
-        .controller('sideNavController', function ($scope, $mdSidenav) {
+    .controller('sideNavController', function ($scope, $mdSidenav) {
             $scope.openLeftMenu = function () {
                 $mdSidenav('left').toggle();
             };
@@ -23,7 +23,7 @@ angular.module('app.controllers', [])
                 $mdSidenav('right').toggle();
             };
         })
-        .controller('EventoElementCtrl', ['$scope', '$compile', function ($scope, $compile) {
+    .controller('EventoElementCtrl', ['$scope', '$compile', function ($scope, $compile) {
                 $scope.eliminar = function () {
                     var id = event.target.id;
                     var idpadre = ($('#' + id).parent().attr('id'));
@@ -34,6 +34,7 @@ angular.module('app.controllers', [])
                     myEl.remove();
 
                 };
+
                 $scope.crear = function () {
                     var id = event.target.id;// obtengo la id elemento del bar
                     var abuelo = $('#' + id).parent().attr("id");
@@ -53,13 +54,32 @@ angular.module('app.controllers', [])
                 };
 
             }])
-        .controller('grillaCtrl', ['$scope', function ($scope) {
-                $scope.number = 12;
-                $scope.getNumber = function (num) {
-                    return new Array(num);
-                };
-            }])
-        .controller('ModalCtrl', ["$scope", "ngDialog", "$compile", function ($scope, ngDialog, $compile) {
+    .controller('grillaCtrl', ['$scope', function ($scope) {
+
+       /* $scope.number = 12;
+        $scope.getNumber = function (num) {
+            return new Array(num);
+        };*/
+       var nc=8,nf =6,n=0,i= 1;
+        //creando la grilla
+        while (n < nc) {
+            var idcol = "col" + n;
+
+            var row='<div layout="row" style="padding: 0px" class="ng-scope layout-row" id="' + idcol + '"></div>';
+            $('#contpizarra').append(row);
+
+            for (i; i <= nf; i++) {
+                var idrow = "fila" + i;
+                var col='<div layout="column" class="columnas ng-scope layout-column" id="' + idrow + i + n + '"></div>';
+                $('#'+idcol).append(col);
+            }
+            n++;
+            i = 1;
+        }
+
+
+    }])
+    .controller('ModalCtrl',["$scope","storageLista","ngDialog", "$compile","fileReader", function ($scope,storageLista, ngDialog, $compile,fileReader) {
 
                 $scope.clickToOpen = function () {
                     idelemento = event.target.id;
@@ -73,28 +93,27 @@ angular.module('app.controllers', [])
                         scope: $scope
                     });
                 };
-                $scope.enter=function () {
-                       /* var html3=('<div id="ElemClonado" class="textoP ng-scope">'+
-                            '<div class="input-group element textoPH" id="parrafo0" style="width:100%;height:100%">'+
-                            '<span class="input-group-addon textotitulo" id="titulotxtoparrafo0">titulo</span>'+
-                            '<input type="text" class="form-control texto" id="teo" aria-describedby="basic-addon3">'+
-                            '</div>'+
-                           '<div id="elementos23"></div>');*/
-
-                       /* var abuelo = $('#' + idelemento).parent().attr("id");
-                        var elemento = document.getElementById(abuelo); // id elemento
-                        angular.element(document.getElementById('view'))
-                            .append($compile(elemento)($scope));*/
-
-                    }
-                $scope.salir=function () {
-
-                    /* var abuelo = $('#eliminar0').parent().attr("id");
-                     console.log(abuelo+'visualizador')
-                     var padre = $('#' + abuelo).children().attr('id');
-                     console.log(padre+'padre')
-                     $scope.editartexto(padre);
-                     */
+                $scope.leerarchivo=function(){
+                    fileReader.readAsDataUrl($scope.file,$scope).then(function(result){
+                        $scope.srcimagen=result;
+                        imgsave=$scope.srcimagen
+                    })
+                }
+                $scope.agregardatos=function () {
+                   // storageLista.guardarlista();
+                    //Verificamos que el campo input no este vacio.
+                    if ($scope.nuevodato != null)
+                    // agregamos el elemento a nuestro array
+                        $scope.datos.push({texto: $scope.nuevodato});
+                    // Limpiamos el input
+                    $scope.nuevodato = null;
+                }
+                $scope.consola=function(persona,index) {
+                   console.log(persona);
+                   console.log(index);
+                }
+                $scope.eliminarlista=function(index) {
+                    $scope.datos.splice(index,1);
                 }
                 $scope.editarboton=function (padre) {
                     var id=$scope.elemento.boton.id;
@@ -115,31 +134,29 @@ angular.module('app.controllers', [])
 
                 }
                 $scope.editartexto=function(padre) {
-                    var idh1=$('#' + padre).children('.textotitulo').attr('id');
-                    var hijoid = document.getElementById(idh1);
+                    var abuelo = $('#' + padre).parent().attr("id");
+                    var padreid=document.getElementById(padre);
+                    var abueloid=document.getElementById(abuelo);
+                    var id=$scope.elemento.textbox.id;
+                    var hijoid = document.getElementById(id);
+                    var posicion=  $scope.posicion.opcion;
 
-                        //largo del texbox//
+                    console.log('id padre '+padre)
+                    $('#' + id).text($scope.nomb_elemento);
+                    hijoid.style.color= $scope.textConfig.textcolor;
+                   // hijoid.style.fontSize= $scope.font_size.opcion;
+                    hijoid.style.fontFamily= $scope.familiaelegida.name;
+                    hijoid.style.backgroundColor= $scope.textConfig.colorfondo;
+                    abueloid.style.width= $scope.largoelemento.width;
+                    $scope.posiciontext( posicion, padre);
 
-                        $scope.largotext(largo, padre);
-                        // ancho del texbox
-
-                        $scope.anchotext(ancho, padre);
-
-                        // cambio posicion del titulo al textbox//
-
-                        $scope.posiciontext(posicion, padre);
-
-                        //cambio del nombre
-
-                        $('#' + idh1).text($('#nombreelemento').val());
-
-                        //fuente opciones
-
-                        $scope.fontfamily(fuente,hijoid);
-                        $scope.fontsize(size,hijoid);
-                        hijoid.style.color=colorfuente;
-                        hijoid.style.background=colorfondo;
-
+                    if( $scope.anchoelegido.name==='grande'){
+                        $(padreid).attr('class',$scope.anchoelegido.clase)
+                    }else if( $scope.anchoelegido.name==='pequeño'){
+                        $(padreid).attr('class',$scope.anchoelegido.clase);
+                    }else if( $scope.anchoelegido.name==='normal'){
+                        $(padreid).attr('class',$scope.anchoelegido.clase)
+                    }
 
                 }
                 $scope.editarparrafo=function(padre){
@@ -157,6 +174,65 @@ angular.module('app.controllers', [])
                    // $scope.elemento={'parrafo':[{}]};
                    // $scope.elementos.push({element:[{  id: $scope.elemento.parrafo.id }]});
                 }
+                $scope.editarcheck=function (padre) {
+
+                    idh1=$('#' + padre).children('.check').attr('id');
+                    idh2=$('#' + padre).children('.textocheck').attr('id');
+                    var padreid=document.getElementById(padre);
+                    var hijoid = document.getElementById(idh1);
+                    var hijoid2 = document.getElementById(idh2);
+                    var posicion=  $scope.posicion.opcion;
+                    padreid.style.width= $scope.largoelemento.width;
+                    console.log('name ele: '+$scope.anchoelegido.name)
+                    if( $scope.anchoelegido.name==='grande'){
+                        $(padreid).attr('class',$scope.anchoelegido.clase)
+                    }else if( $scope.anchoelegido.name==='pequeño'){
+                        $(padreid).attr('class',$scope.anchoelegido.clase)
+                    }else if( $scope.anchoelegido.name==='normal'){
+                        console.log('cambio de clas :'+$scope.anchoelegido.name)
+                        $(padreid).attr('class',$scope.anchoelegido.clase)
+                    }
+                    $scope.posiciontext( posicion, padre);
+                    hijoid.style.backgroundColor=  $scope.textConfig.colorfondo;
+                }
+                $scope.editarimg=function (padre) {
+                    var abuelo = $('#' + padre).parent().attr("id");
+                    var idh1=$('#' + padre).children('.thumb').attr('id');
+                    var abueloid=document.getElementById(abuelo);
+                    var hijoid = document.getElementById(idh1);
+                    var padreid = document.getElementById(padre);
+
+                    if($scope.formaimmagen.opcion==="true"){
+
+                        hijoid.style.borderTopLeftRadius='0% 0%';
+                        hijoid.style.borderTopRightRadius='0% 0%';
+                        hijoid.style.borderBottomLeftRadius='0% 0%';
+                        hijoid.style.borderBottomRightRadius='0% 0%';
+                        padreid.style.backgroundColor='rgba(255, 255, 255, 0.88)';
+                        padreid.style.border='border: 1px solid #ddd;';
+
+                    }
+                    if($scope.formaimmagen.opcion==="false"){
+                        //$('#'+idh1).attr('class','circular--square')
+
+                        hijoid.style.borderTopLeftRadius='50% 50%';
+                        hijoid.style.borderTopRightRadius='50% 50%';
+                        hijoid.style.borderBottomLeftRadius='50% 50%';
+                        hijoid.style.borderBottomRightRadius='50% 50%';
+                        padreid.style.backgroundColor='rgba(255, 255, 255, 0)';
+                        padreid.style.border='0px !important';
+
+                    }
+
+                    hijoid.src= imgsave;
+                    abueloid.style.width=  $scope.anchoelement.width;
+                    abueloid.style.height= $scope.altoelement.height;
+
+                }
+                $scope.editarselect=function(padre){
+
+                }
+
                 $scope.alignjustificar=function(){
                    alignvalor='justify';
                 }
@@ -170,142 +246,6 @@ angular.module('app.controllers', [])
                     alignvalor='left';
                 }
 
-                $scope.editarcheck=function (padre) {
-
-                    idh1=$('#' + padre).children('.check').attr('id');
-                    idh2=$('#' + padre).children('.textocheck').attr('id');
-                    var padreid=document.getElementById(padre);
-                    var hijoid = document.getElementById(idh1);
-                    var hijoid2 = document.getElementById(idh2);
-                    var posicion=  $scope.posicion.opcion;
-
-                    padreid.style.width= $scope.largoelemento.width;
-                    console.log('name ele: '+$scope.anchoelegido.name)
-                    if( $scope.anchoelegido.name==='grande'){
-                        $(padreid).attr('class',$scope.anchoelegido.clase)
-                    }else if( $scope.anchoelegido.name==='pequeño'){
-                        $(padreid).attr('class',$scope.anchoelegido.clase)
-                    }else if( $scope.anchoelegido.name==='normal'){
-                        console.log('cambio de clas :'+$scope.anchoelegido.name)
-                        $(padreid).attr('class',$scope.anchoelegido.clase)
-                    }
-
-                    $scope.posiciontext( posicion, padre);
-                    hijoid.style.backgroundColor=  $scope.textConfig.colorfondo;
-
-
-
-
-                }
-                $scope.editarimg=function (padre) {
-
-                }
-                $scope.anchosizeelement=function(size,elem){
-                    if(size==='1'){
-                        elem.style.width='100px';
-                    }
-                    if(size==='2'){
-                        elem.style.width='200px';
-                    }
-                    if(size==='3'){
-                        elem.style.width='300px';
-                    }
-                    if(size==='4'){
-                        elem.style.width='400px';
-                    }
-
-                }
-                $scope.altosizeelement=function(size,elem){
-                if(size==='1'){
-                    elem.style.height='100px';
-                }
-                if(size==='2'){
-                    elem.style.height='200px';
-                }
-                if(size==='3'){
-                    elem.style.height='300px';
-                }
-                if(size==='4'){
-                    elem.style.height='400px';
-                }
-
-            }
-                $scope.fontsize=function(size,elem){
-
-                    if(size==='0'){
-                        elem.style.fontSize='10px';
-                    }
-                    if(size==='1'){
-                        elem.style.fontSize='15px';
-                    }
-                    if(size==='2'){
-                        elem.style.fontSize='18px';
-                    }
-                    if(size==='3'){
-                        elem.style.fontSize='20px';
-                    }
-                    if(size==='4'){
-                        elem.style.fontSize='24px';
-                    }
-                    if(size==='5'){
-                        elem.style.fontSize='30px';
-                    }
-
-
-                }
-                $scope.fontfamily=function(fuente,elem){
-
-                    if(fuente==='1'){
-                        elem.style.fontFamily='Arial';
-                    }if(fuente==='2'){
-                        elem.style.fontFamily='Arial Black';
-                    }if(fuente==='3'){
-                        elem.style.fontFamily='Courier New';
-                    }if(fuente==='4'){
-                        elem.style.fontFamily='Georgia';
-                    }if(fuente==='5'){
-                        elem.style.fontFamily='Comic Sans MS';
-                    }if(fuente==='6'){
-                        elem.style.fontFamily='Impact';
-                    }if(fuente==='7'){
-                        elem.style.fontFamily='Times New Roman';
-                    }if(fuente==='8'){
-                        elem.style.fontFamily='Trebuchet MS';
-                    }if(fuente==='9'){
-                        elem.style.fontFamily='Verdana';
-                    }
-                };
-                $scope.largotext=function(largo,id){
-                    var padre=$('#'+id).parent().attr('id');
-                    var elem=document.getElementById(padre);
-                    if(largo==='1'){
-                      elem.style.width='250px';
-                    }
-                    if(largo==='2'){
-                      elem.style.width='350px';
-                    }
-                    if(largo==='3'){
-                      elem.style.width='400px';
-                    }
-                    if(largo==='4'){
-                      elem.style.width='500px';
-                    }
-                    
-                }
-                $scope.anchotext=function (anch,id) {
-                    if( anch=== '1'){
-                        //grande
-                        $('#' + id).attr("class","input-group input-group-lg");
-                    }
-                    else if (anch === '2') {
-                        //normal
-                        $('#' + id).attr("class","input-group");
-                    } else if (anch === '3') {
-                        //pequeño
-                        console.log('entre')
-                        $('#' + id).attr("class","input-group input-group-sm");
-                    }
-                }
                 $scope.posiciontext=function(posicion,id){
                     if(posicion==='derecha'){
                         $($('#' + id).children('.textotitulo')).before($('#' + id).children('.texto')); //derecha
@@ -320,13 +260,17 @@ angular.module('app.controllers', [])
                     var classabuelo = $('#' + idelemento).parent().attr("class");
                     var padre = $('#' + abuelo).children().attr('id');
 
+
+                    console.log($('#'+padre).children('.thumb').attr("class"))
+
                     //texto
                     if ($('#' + padre).children('.texto').attr("class") === 'form-control texto') {
                         $scope.editartexto(padre);
                     }
                     //imagen
-                    if ($('#'+padre).children('.element').attr("class")==='thumbnail element'){
-
+                    if ($('#' + padre).attr("class") === 'thumbnail element') {
+                        console.log('save img')
+                        $scope.editarimg(padre);
                     }
                     //boton
                     if ($('#' + abuelo).attr("class") === 'element boton grid ng-scope') {
@@ -336,27 +280,23 @@ angular.module('app.controllers', [])
                     }
                     //parrafo
                     if ($('#' + padre).children('.element').attr("class") === 'lead element') {
-
-                            $scope.editarparrafo(padre);
-
-
+                        $scope.editarparrafo(padre);
                         alignvalor="";
-
                     }
                     //panel
                     if ($('#' + padre).attr("class") === 'panelP card grid _md') {
 
-                        var id = $('#'+padre).children('.panelbody').attr('id',"panelb" + contador);
+
                         var hijo=$('#'+padre).children('.panelbody').attr('id')
                         console.log( 'n'+hijo);
                         nc = $('#columnas').val();
                         nf = $('#filas').val();
                         n = 0;
                         i = 1;
-                        var idcol = "col" + hijo;
+                        var idcol = "colpanel" + hijo;
                         //creando la grilla
                         while (n < nc) {
-                            var idrow = "fila" + hijo + n;
+                            var idrow = "filapanel" + hijo + n;
                              var row='<div layout="row" style="padding: 0px" class="ng-scope layout-row" id="' + idrow + '"></div>';
                             $('#'+hijo).append(row);
 
@@ -371,7 +311,7 @@ angular.module('app.controllers', [])
                         }
                     }
                     //check
-                    if ($('#'+padre).attr("class") === 'input-group element' || $('#'+padre).attr("class") === 'input-group input-group-lg' || $('#'+padre).attr("class") === 'input-group input-group-sm'){
+                    if ($('#' + padre).children('.check').attr("class") === 'input-group-addon check' ){
 
                         $scope.editarcheck(padre);
                         }
@@ -380,11 +320,12 @@ angular.module('app.controllers', [])
                     ngDialog.closeAll();
                 };
             }])
-        .controller('modaldatosCtrl',["$scope","$compile",function ($scope,$compile) {
+    .controller('modaldatosCtrl',["$scope","$compile","fileReader",function ($scope,$compile,fileReader) {
 
             var abuelo = $('#' + idelemento).parent().attr("id");
             var classabu=$('#'+abuelo).attr("class")
             var padre = $('#' + abuelo).children().attr('id');
+
 
             //cambio id del hijo texto
             $('#'+padre).children('.textotitulo').attr('id','titulotxto'+padre);
@@ -393,11 +334,13 @@ angular.module('app.controllers', [])
             //cambio id hijo check
             $('#' + padre).children('.check').attr('id','check'+padre);
             $('#' + padre).children('.textocheck').attr('id','check hermano'+padre);
-
-
+            //cambio id panel
+            console.log(abuelo)
+            $('#'+padre).children('.panelbody').attr('id',"panelb" + contador);
+            //cambio id img
+            $('#'+padre).children('.thumb').attr('id',"imagen" + contador);
             var idh1=$('#'+padre).children('.textotitulo').attr('id');
 
-            //$scope.textConfig = {};
             $scope.ancho = {
                 opcion: null,
             }
@@ -490,28 +433,63 @@ angular.module('app.controllers', [])
                 {id:4,width:'300px'},
                 {id:5,width:'350px'}
             ]
+            $scope.datos = [];
 
-            //$scope.elementos=[];
+            $scope.formaimg= [
+                {title: 'cuadrado',value:'true',name:"cuadrado"},
+                {title: 'circular',value:'false',name:"circular"}
+            ];
 
-            console.log($scope.elemento);
-            // obtengo los valores de los atributos del elemento texbox//
-            //     textbox
+            $scope.formaimmagen={
+            opcion:null,
+            }
+
+            // textbox
             if ($('#' + padre).children('.texto').attr("class") === 'form-control texto') {
-                $scope.elemento={}
+                $scope.elemento={
+                    textbox:{}
+                }
                 $scope.verattrtexto = 'true';
-                $scope.nomb_elemento = $('#' + idh1).text();
-                //$scope.textConfig.textColor=colorfuente;
+                $scope.elemento.textbox.id=$('#' + idh1).attr('id');
+                $scope.elemento.textbox.texttitulo=$('#' + idh1).text();
+                $scope.elemento.textbox.color=$('#' + idh1).css('color')
+                $scope.elemento.textbox.color_fondo=$('#' + idh1).css('background-color');
+                $scope.elemento.textbox.font_size=$('#' + idh1).css('font-size');
+                $scope.elemento.textbox.font_family=$('#' + idh1).css('font-family');
+                $scope.elemento.textbox.clase=$('#' + padre).attr('class');
 
-                $scope.textConfig.textColor;
-                $scope.textConfig.fondoColor;
+                $scope.fontfamilia.push({id:10,name: $scope.elemento.textbox.font_family});
+                $scope.familiaelegida=$scope.fontfamilia[9];
+                $scope.elemento.textbox.widthcheck=$('#' + padre).css('width');
+                $scope.widthcheck.push({id:6,width:  $scope.elemento.textbox.widthcheck});
+                $scope.largoelemento=$scope.widthcheck[5];
+
+                $scope.nomb_elemento=$scope.elemento.textbox.texttitulo;
+                $scope.textConfig.textcolor= $scope.elemento.textbox.color;
+                $scope.textConfig.colorfondo= $scope.elemento.textbox.color_fondo;
+                $scope.font_size.opcion=$scope.elemento.textbox.font_size;
+                $scope.posicion.opcion
+                console.log('clase :'+$scope.elemento.textbox.clase)
+
+                if(  $scope.elemento.textbox.clase==='input-group element'){
+                    $scope.anchoelegido =$scope.anchotexto[2]
+
+                }else if( $scope.elemento.textbox.clase==='input-group input-group-lg'){
+                    $scope.anchoelegido =$scope.anchotexto[0]
+
+                }else if( $scope.elemento.textbox.clase==='input-group input-group-sm'){
+                    $scope.anchoelegido =$scope.anchotexto[1]
+                }
+
                 $scope.cambio = function () {
-                    ancho = $scope.ancho.opcion;
-                    largo = $scope.largo.opcion;
-                    posicion = $scope.posicion.opcion;
-                    fuente=$scope.fonts.opcion;
-                    size=$scope.size.opcion;
-                    colorfuente= $scope.textConfig.textColor;
-                    colorfondo= $scope.textConfig.fondoColor;
+                    $scope.nomb_elemento;
+                    $scope.font_size.opcion
+                    $scope.textConfig.textcolor
+                    $scope.textConfig.colorfondo
+                    $scope.familiaelegida
+                    $scope.anchoelegido
+                    $scope.largoelemento
+                    $scope.posicion.opcion
                 }
             }
             //panel
@@ -552,7 +530,7 @@ angular.module('app.controllers', [])
                 }
             }
             //check
-            if ($('#'+padre).attr("class") === 'input-group element' || $('#'+padre).attr("class") === 'input-group input-group-lg' || $('#'+padre).attr("class") === 'input-group input-group-sm'){
+            if ($('#' + padre).children('.check').attr("class") === 'input-group-addon check'){
 
                 idh1=$('#' + padre).children('.check').attr('id');
                 idh2=$('#' + padre).children('.textocheck').attr('id');
@@ -623,8 +601,72 @@ angular.module('app.controllers', [])
                     $scope.familiaelegida
                 }
             }
-        }])
-        .controller('fotoCtrl', ['$scope', 'Upload', '$timeout', function ($scope, Upload, $timeout) {
+            //img
+            if ($('#' + padre).attr("class") === 'thumbnail element') {
+                var idh1=$('#' + padre).children('.thumb').attr('id');
+                var abuelo = $('#' + padre).parent().attr("id");
+                $scope.verattrimg='true';
+                $scope.elemento={imagen:{}};
+
+                $scope.elemento.imagen.id=$('#' + idh1).attr('id');
+                $scope.elemento.imagen.widthbton=$('#' + abuelo).css('width');
+                $scope.elemento.imagen.heightbton=$('#' + abuelo).css('height');
+
+                $scope.formaimmagen.opcion=$scope.formaimg.name;
+
+                var img = document.getElementById($scope.elemento.imagen.id);
+                $scope.elemento.imagen.recurso=img.src;
+                $scope.srcimagen= $scope.elemento.imagen.recurso;
+
+                $scope.widthbuton.push({id:9,width: $scope.elemento.imagen.widthbton});
+                $scope.anchoelement=$scope.widthbuton[8];
+
+                $scope.heightbuton.push({id:9,height: $scope.elemento.imagen.heightbton});
+                $scope.altoelement=$scope.heightbuton[8];
+
+
+                $scope.cambio = function () {
+                    $scope.anchoelement
+                    $scope.altoelement
+                    $scope.imageSrc
+                    $scope.formaimmagen
+
+                    if($scope.formaimmagen.opcion==="true"){
+                        console.log('cuadrado')
+                        $('#imgcuadrado').attr('style','display:show')
+                        $('#imgcircular').attr('style','display:none')
+                    }
+                    if($scope.formaimmagen.opcion==="false"){
+                        console.log('circulo')
+                        $('#imgcuadrado').attr('style','display:none')
+                        $('#imgcircular').attr('style','display:show')
+                    }
+
+                }
+            }
+            //select
+            if ($('#' + padre).attr("class") === 'form-group element selectP'){
+                $scope.verattrselect='true';
+
+                $scope.elemento={select:{}}
+                $scope.elemento.select.id=$('#' + idh1).attr('id');
+                $scope.elemento.select.texttitulo=$('#' + idh1).text();
+
+                console.log('dato a agregar. '+$scope.agregodato);
+
+                $scope.cambio = function () {
+                    $scope.nomb_elemento;
+                    console.log('dato a agregar. '+$scope.agregodato);
+
+                }
+
+            }
+
+
+
+
+            }])
+    .controller('fotoCtrl', ['$scope', 'Upload', '$timeout', function ($scope, Upload, $timeout) {
             $scope.uploadPic = function(file) {
                 file.upload = Upload.upload({
                     url: 'https://angular-file-upload-cors-srv.appspot.com/upload',
@@ -644,6 +686,39 @@ angular.module('app.controllers', [])
                 });
             }
         }])
+    .controller('UploadController',["$scope","fileReader",function ($scope, fileReader) {
+        $scope.readFile = function () {
+            fileReader.readAsDataUrl($scope.file, $scope)
+                .then(function(result) {
+                    $scope.imageSrc = result;
+
+                });
+
+        };
+    }])
+    .controller('controlarTareas',function($scope){
+        //array que guarda las tareas
+        $scope.tareas = [];
+
+        //Modelo que permite agregar tareas
+        $scope.agregarTarea = function () {
+            //Verificamos que el campo input no este vacio.
+            if ($scope.nuevaTarea != null)
+            // agregamos el elemento a nuestro array
+                $scope.tareas.push({texto: $scope.nuevaTarea});
+            // Limpiamos el input
+            $scope.nuevaTarea = null;
+        };
 
 
+        // Modelo que permite eliminar tarea
+        $scope.eliminarTarea = function (dato) {
+            // Al modelo le hemos pasado "dato" que es el texto que contiene el elemento donde se hizo "click"
+            // guardamos en la variable pos el index del array que tiene el texto que hemos recogido del elemento donde se hizo click
+            var pos = $scope.tareas.indexOf(dato);
+            // removemos del array tareas el indice que guarda al elemento donde se hizo click
+            $scope.tareas.splice(pos);
+        }
+
+    })
 
