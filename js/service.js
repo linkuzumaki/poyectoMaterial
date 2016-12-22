@@ -1,5 +1,19 @@
 angular.module('app.service',[])
+    .service('storageLista',['$window',function (win) {
 
+
+        this.guardarlista=function(data,name) {
+            sessionStorage.setItem(name, JSON.stringify(data));
+        }
+        this.removelista=function (index,data) {
+           data.splice(index,1);
+        }
+        this.listadatos=function(name){
+            var data = JSON.parse(sessionStorage.getItem(name));
+            return data;
+        }
+
+    }])
     .factory('fileReader',function($q, $log){
         var onLoad = function(reader, deferred, scope) {
             return function () {
@@ -42,19 +56,5 @@ angular.module('app.service',[])
         return {
             readAsDataUrl: readAsDataURL
         };
-
-    })
-    .service('storageLista',function () {
-        var datos=[];
-
-        this.guardarlista=function() {
-          console.log('guardar en lista localstorage')
-        }
-        this.removelista=function (index) {
-
-        }
-        this.listadatos=function(){
-            return datos;
-        }
 
     })

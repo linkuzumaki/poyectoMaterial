@@ -53,10 +53,9 @@
                                 </md-list-item>
                                 <md-list-item>
                                     <div id="select" style="display: none">
-                                        <div class="form-group element selectP">
-                                            <label for="sel1" id="selecttitulo">Select list:</label>
-                                            <select class="form-control" id="sel1">
-                                                <option ng-repeat="altobtn in datos"></option>
+                                        <div class="form-group element selectP" ng-controller="ModalCtrl">
+                                            <label  class="textoselect">Select list:</label>
+                                            <select class="form-control selecthijo" ng-model="listan" ng-options="listaselect.texto for listaselect in lista" ng-mouseenter="verlista()" >
 
                                             </select>
                                         </div>
@@ -145,10 +144,7 @@
                         <md-button class="md-primary">Click me</md-button>
                         <md-button class="md-accent">or maybe me</md-button>
                         <md-button class="md-warn">Careful</md-button>
-                      <!--  <div md-color-picker ng-model="valueObj"></div>-->
-
                     </div>
-
                 </md-card-content>
             </md-card>
         </div>

@@ -206,7 +206,22 @@
             </div>
         </div>
         <div layout="column" id="attrselect" ng-show="verattrselect" >
+            <div layout="row">
+                <h5>Preview</h5>
+                <div class="md-color-picker-checkered-bg" layout="colum" layout-align="center center" style="width:100%;height:80px">
+                    <label  class="textoselect" ng-bind="tituloselect">Select list:</label>
+                    <select class="form-control selecthijo" ng-model="listaelegida" id="sel1" ng-style="{'width':largoelemento.width}">
+                        <option ng-repeat="listaselect in lista">{{listaselect.texto}}</option>
+                    </select>
+                </div>
+            </div>
             <div layout="row" >
+                <div layout="column">
+                    <md-input-container  flex="100"  class="md-block">
+                        <label>cambiar Titulo</label>
+                        <input required name="nomb_elemento" ng-model="tituloselect" ng-change="cambio()" id="tituloselect">
+                    </md-input-container>
+                </div>
                 <div layout="column">
                     <md-input-container  flex="100"  class="md-block">
                         <label>agregar datos al select</label>
@@ -216,13 +231,18 @@
                 <div layout="column">
                     <md-button class="md-primary" ng-click="agregardatos()">agregar</md-button>
                 </div>
-
+                <md-input-container flex="50" >
+                    <label>Largo elemento</label>
+                    <md-select ng-model="largoelemento"  ng-change="cambio()">
+                        <md-option ng-value="largocheck" ng-repeat="largocheck in widthcheck">{{ largocheck.width }}</md-option>
+                    </md-select>
+                </md-input-container>
             </div>
             <div layout="column">
                 <div layout="column">
                     <md-divider></md-divider>
                         <md-subheader class="md-no-sticky">Datos:</md-subheader>
-                        <md-list-item class="secondary-button-padding" ng-repeat="info in datos track by info.texto">
+                        <md-list-item class="secondary-button-padding" ng-repeat="info in datos">
                             <p>{{info.texto}}</p>
                             <!--<md-button ng-click="consola(datos,$index)">ver</md-button>-->
                             <md-button class="md-secondary" ng-click="eliminarlista($index)"><i class="material-icons">delete</i></md-button>

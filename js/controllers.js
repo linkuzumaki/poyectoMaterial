@@ -5,16 +5,6 @@ angular.module('app.controllers', [])
     .controller('mainController', function ($scope) {
             $scope.message = 'Hola, Mundo!';
         })
-    .controller('aboutController', function ($scope) {
-            $scope.ver=function(){
-
-                alert('Esta es la página "Acerca de');
-            }
-            $scope.message = 'Esta es la página "Acerca de"';
-        })
-    .controller('contactController', function ($scope) {
-            $scope.message = 'Esta es la página de "Contacto", aquí podemos poner un formulario';
-        })
     .controller('sideNavController', function ($scope, $mdSidenav) {
             $scope.openLeftMenu = function () {
                 $mdSidenav('left').toggle();
@@ -54,7 +44,7 @@ angular.module('app.controllers', [])
                 };
 
             }])
-    .controller('grillaCtrl', ['$scope', function ($scope) {
+    .controller('grillaCtrl',['$scope', function ($scope) {
 
        /* $scope.number = 12;
         $scope.getNumber = function (num) {
@@ -79,11 +69,10 @@ angular.module('app.controllers', [])
 
 
     }])
-    .controller('ModalCtrl',["$scope","storageLista","ngDialog", "$compile","fileReader", function ($scope,storageLista, ngDialog, $compile,fileReader) {
+    .controller('ModalCtrl',["$scope","storageLista","ngDialog","$compile","fileReader", function ($scope,storageLista,ngDialog,$compile,fileReader) {
 
                 $scope.clickToOpen = function () {
                     idelemento = event.target.id;
-
                     $scope.dialog= ngDialog.open({
                         class:'ngdialog-theme-default',
                         template: 'templates/modal.html',
@@ -93,6 +82,13 @@ angular.module('app.controllers', [])
                         scope: $scope
                     });
                 };
+                $scope.verlista=function(index) {
+                    var idelemento = event.target.id;
+                    var padre = $('#' + idelemento).parent().attr("id");
+                    $scope.lista = storageLista.listadatos(padre)
+                    $scope.listan=$scope.lista;
+                    console.log($scope.listan)
+                }
                 $scope.leerarchivo=function(){
                     fileReader.readAsDataUrl($scope.file,$scope).then(function(result){
                         $scope.srcimagen=result;
@@ -100,20 +96,21 @@ angular.module('app.controllers', [])
                     })
                 }
                 $scope.agregardatos=function () {
-                   // storageLista.guardarlista();
-                    //Verificamos que el campo input no este vacio.
+                    var id=$scope.elemento.select.id
                     if ($scope.nuevodato != null)
-                    // agregamos el elemento a nuestro array
                         $scope.datos.push({texto: $scope.nuevodato});
-                    // Limpiamos el input
+                        storageLista.guardarlista($scope.datos,id);
                     $scope.nuevodato = null;
+                    $scope.lista=storageLista.listadatos($scope.elemento.select.id)
+                    $scope.listaelegida=$scope.lista[0];
+
                 }
                 $scope.consola=function(persona,index) {
                    console.log(persona);
                    console.log(index);
                 }
                 $scope.eliminarlista=function(index) {
-                    $scope.datos.splice(index,1);
+                    storageLista.removelista(index,$scope.lista)
                 }
                 $scope.editarboton=function (padre) {
                     var id=$scope.elemento.boton.id;
@@ -230,9 +227,14 @@ angular.module('app.controllers', [])
 
                 }
                 $scope.editarselect=function(padre){
-
+                    var abuelo = $('#' + padre).parent().attr("id");
+                    var padreid=document.getElementById(padre);
+                    var abueloid=document.getElementById(abuelo);
+                    console.log($scope.largoelemento.width);
+                    var id=$scope.elemento.select.idtitulo;
+                    $('#' + id).text($scope.tituloselect);
+                    abueloid.style.width= $scope.largoelemento.width;
                 }
-
                 $scope.alignjustificar=function(){
                    alignvalor='justify';
                 }
@@ -245,7 +247,6 @@ angular.module('app.controllers', [])
                 $scope.alignizquierda=function(){
                     alignvalor='left';
                 }
-
                 $scope.posiciontext=function(posicion,id){
                     if(posicion==='derecha'){
                         $($('#' + id).children('.textotitulo')).before($('#' + id).children('.texto')); //derecha
@@ -315,12 +316,16 @@ angular.module('app.controllers', [])
 
                         $scope.editarcheck(padre);
                         }
+                        //select
+                    if($('#' + padre).attr("class") === 'form-group element selectP ng-scope'){
+                        $scope.editarselect(padre);
+                    }
                     console.log($('#' + idelemento).text());
 
                     ngDialog.closeAll();
                 };
             }])
-    .controller('modaldatosCtrl',["$scope","$compile","fileReader",function ($scope,$compile,fileReader) {
+    .controller('modaldatosCtrl',["$scope","$compile","fileReader","storageLista",function ($scope,$compile,fileReader,storageLista) {
 
             var abuelo = $('#' + idelemento).parent().attr("id");
             var classabu=$('#'+abuelo).attr("class")
@@ -340,6 +345,11 @@ angular.module('app.controllers', [])
             //cambio id img
             $('#'+padre).children('.thumb').attr('id',"imagen" + contador);
             var idh1=$('#'+padre).children('.textotitulo').attr('id');
+            //cambio id select
+            $('#'+padre).children('.selecthijo').attr('id',"select" + contador);
+            $('#'+padre).children('.textoselect').attr('id',"selecttexto" + contador);
+
+
 
             $scope.ancho = {
                 opcion: null,
@@ -434,6 +444,8 @@ angular.module('app.controllers', [])
                 {id:5,width:'350px'}
             ]
             $scope.datos = [];
+            $scope.lista=[]
+            $scope.listamain=[];
 
             $scope.formaimg= [
                 {title: 'cuadrado',value:'true',name:"cuadrado"},
@@ -645,20 +657,30 @@ angular.module('app.controllers', [])
                 }
             }
             //select
-            if ($('#' + padre).attr("class") === 'form-group element selectP'){
+            if ($('#' + padre).attr("class") === 'form-group element selectP ng-scope'){
                 $scope.verattrselect='true';
-
                 $scope.elemento={select:{}}
-                $scope.elemento.select.id=$('#' + idh1).attr('id');
-                $scope.elemento.select.texttitulo=$('#' + idh1).text();
 
-                console.log('dato a agregar. '+$scope.agregodato);
+                var idh1=$('#'+padre).children('.selecthijo').attr('id');
+                var idh2=$('#'+padre).children('.textoselect').attr('id');
+
+                $scope.elemento.select.id=$('#' + padre).attr('id');
+                $scope.elemento.select.idtitulo=$('#' + idh2).attr('id')
+                $scope.elemento.select.widthcheck=$('#' + abuelo).css('width');
+                $scope.elemento.select.texttitulo=$('#' + idh2).text();
+                $scope.widthcheck.push({id:6,width:  $scope.elemento.select.widthcheck});
+                $scope.largoelemento=$scope.widthcheck[5];
+                $scope.tituloselect=$scope.elemento.select.texttitulo;
+                $scope.lista=storageLista.listadatos($scope.elemento.select.id);
+                $scope.elemento.select.idvisualselect=$('#sel1').attr('id');
 
                 $scope.cambio = function () {
-                    $scope.nomb_elemento;
-                    console.log('dato a agregar. '+$scope.agregodato);
+                    $scope.elemento.select.idtitulo
+                    $scope.lista
+                    $scope.largoelemento
 
                 }
+
 
             }
 
@@ -666,26 +688,6 @@ angular.module('app.controllers', [])
 
 
             }])
-    .controller('fotoCtrl', ['$scope', 'Upload', '$timeout', function ($scope, Upload, $timeout) {
-            $scope.uploadPic = function(file) {
-                file.upload = Upload.upload({
-                    url: 'https://angular-file-upload-cors-srv.appspot.com/upload',
-                    data: {username: $scope.username, file: file},
-                });
-
-                file.upload.then(function (response) {
-                    $timeout(function () {
-                        file.result = response.data;
-                    });
-                }, function (response) {
-                    if (response.status > 0)
-                        $scope.errorMsg = response.status + ': ' + response.data;
-                }, function (evt) {
-                    // Math.min is to fix IE which reports 200% sometimes
-                    file.progress = Math.min(100, parseInt(100.0 * evt.loaded / evt.total));
-                });
-            }
-        }])
     .controller('UploadController',["$scope","fileReader",function ($scope, fileReader) {
         $scope.readFile = function () {
             fileReader.readAsDataUrl($scope.file, $scope)
@@ -696,29 +698,5 @@ angular.module('app.controllers', [])
 
         };
     }])
-    .controller('controlarTareas',function($scope){
-        //array que guarda las tareas
-        $scope.tareas = [];
 
-        //Modelo que permite agregar tareas
-        $scope.agregarTarea = function () {
-            //Verificamos que el campo input no este vacio.
-            if ($scope.nuevaTarea != null)
-            // agregamos el elemento a nuestro array
-                $scope.tareas.push({texto: $scope.nuevaTarea});
-            // Limpiamos el input
-            $scope.nuevaTarea = null;
-        };
-
-
-        // Modelo que permite eliminar tarea
-        $scope.eliminarTarea = function (dato) {
-            // Al modelo le hemos pasado "dato" que es el texto que contiene el elemento donde se hizo "click"
-            // guardamos en la variable pos el index del array que tiene el texto que hemos recogido del elemento donde se hizo click
-            var pos = $scope.tareas.indexOf(dato);
-            // removemos del array tareas el indice que guarda al elemento donde se hizo click
-            $scope.tareas.splice(pos);
-        }
-
-    })
 
