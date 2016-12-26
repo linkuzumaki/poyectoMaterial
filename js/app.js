@@ -13,10 +13,10 @@
      .config(function($mdThemingProvider) {
          $mdThemingProvider.theme('default')
 
-             .primaryPalette('purple',{
+             .primaryPalette('indigo',{
                  'default': '400'
             })
-             .accentPalette('indigo',{
+             .accentPalette('blue',{
                  'default':'A200'
              })
 

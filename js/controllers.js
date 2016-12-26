@@ -66,8 +66,23 @@ angular.module('app.controllers', [])
             n++;
             i = 1;
         }
-
-
+       /* var row_general='<div layout="row" style="padding: 0px" class="ng-scope layout-row" id="row_g"></div>'
+        $('#contpizarra').append(row_general);
+        while (n < nc) {
+            var idrow = "row" + n;
+            var idcolmg="row_col"+n;
+            var rows='<div flex class="ng-scope layout-row" id="' + idrow + '"></div>'
+            var columnas='<div layout="column" id="' + idcolmg + '"></div>'
+            $('#row_g').append(rows);
+            $('#'+idrow).append(columnas);
+            for (i; i <= nf; i++) {
+                var idcol = "fila" + i;
+                var columnas_div='<div flex class="columnas ng-scope layout-column" id="' + idcol + i + n + '" ></div>'
+                $('#'+idcolmg).append(columnas_div);
+            }
+            n++;
+            i = 1;
+        }*/
     }])
     .controller('ModalCtrl',["$scope","storageLista","ngDialog","$compile","fileReader", function ($scope,storageLista,ngDialog,$compile,fileReader) {
 
@@ -126,7 +141,7 @@ angular.module('app.controllers', [])
                     idp.style.height= $scope.altoelement.height;
                     idh.style.backgroundColor= $scope.textConfig.colorfondo;
                     idh.style.color=$scope.textConfig.textcolor
-                    idh.style.fontSize=$scope.font_size.opcion;
+                    idh.style.fontSize=$scope.font_size.opcion+'px';
                     $('#' +id).val($scope.nomb_elementobtn);
 
                 }
@@ -137,23 +152,17 @@ angular.module('app.controllers', [])
                     var id=$scope.elemento.textbox.id;
                     var hijoid = document.getElementById(id);
                     var posicion=  $scope.posicion.opcion;
-
                     console.log('id padre '+padre)
                     $('#' + id).text($scope.nomb_elemento);
+                    $(padreid).attr('class',$scope.anchoelegido.opcion.clase)
                     hijoid.style.color= $scope.textConfig.textcolor;
-                   // hijoid.style.fontSize= $scope.font_size.opcion;
                     hijoid.style.fontFamily= $scope.familiaelegida.name;
                     hijoid.style.backgroundColor= $scope.textConfig.colorfondo;
                     abueloid.style.width= $scope.largoelemento.width;
+
                     $scope.posiciontext( posicion, padre);
 
-                    if( $scope.anchoelegido.name==='grande'){
-                        $(padreid).attr('class',$scope.anchoelegido.clase)
-                    }else if( $scope.anchoelegido.name==='pequeño'){
-                        $(padreid).attr('class',$scope.anchoelegido.clase);
-                    }else if( $scope.anchoelegido.name==='normal'){
-                        $(padreid).attr('class',$scope.anchoelegido.clase)
-                    }
+
 
                 }
                 $scope.editarparrafo=function(padre){
@@ -162,7 +171,7 @@ angular.module('app.controllers', [])
                     var hijoid = document.getElementById(id);
                     $('#' + id).text($scope.modal.nomb_elemento);
                     hijoid.style.color=$scope.textConfig.textcolor;
-                    hijoid.style.fontSize=$scope.font_size.opcion;
+                    hijoid.style.fontSize=$scope.font_size.opcion+'px';
                     hijoid.style.textAlign= alignvalor;
                     hijoid.style.fontFamily=  $scope.familiaelegida.name;
                     hijoid.style.height='150px';
@@ -174,12 +183,14 @@ angular.module('app.controllers', [])
                 $scope.editarcheck=function (padre) {
 
                     idh1=$('#' + padre).children('.check').attr('id');
+                    abu=$('#' + padre).parent().attr('id');
                     idh2=$('#' + padre).children('.textocheck').attr('id');
                     var padreid=document.getElementById(padre);
+                    var abuid=document.getElementById(abu);
                     var hijoid = document.getElementById(idh1);
                     var hijoid2 = document.getElementById(idh2);
                     var posicion=  $scope.posicion.opcion;
-                    padreid.style.width= $scope.largoelemento.width;
+                    abuid.style.width= $scope.largoelemento.width;
                     console.log('name ele: '+$scope.anchoelegido.name)
                     if( $scope.anchoelegido.name==='grande'){
                         $(padreid).attr('class',$scope.anchoelegido.clase)
@@ -232,8 +243,15 @@ angular.module('app.controllers', [])
                     var abueloid=document.getElementById(abuelo);
                     console.log($scope.largoelemento.width);
                     var id=$scope.elemento.select.idtitulo;
+                    console.log(id)
+                    console.log($scope.formulario.form)
+
+                    var copy = $($scope.elementohtml).clone(true);
+                    $('#ejemplomain').append(copy);
+                    var idtitulo=document.getElementById(id);
                     $('#' + id).text($scope.tituloselect);
                     abueloid.style.width= $scope.largoelemento.width;
+                    idtitulo.style.color= $scope.textConfig.textcolor;
                 }
                 $scope.alignjustificar=function(){
                    alignvalor='justify';
@@ -256,12 +274,24 @@ angular.module('app.controllers', [])
                         $($('#' + id).children('.textocheck')).before($('#' + id).children('.check')); //izquierda
                     }
                 }
+                $scope.anchotext=function (ancho,id) {
+                    console.log(ancho.id)
+                    console.log(id)
+                    if( ancho.id=== '1'){
+                        //grande
+                        $('#' + id).attr("class", " input-group input-group-lg");
+                    } else if (ancho.id === '2') {
+                        //normal
+                        $('#' + id).attr("class", " input-group");
+                    } else if (ancho.id === '3') {
+                        //pequeño
+                        $('#' + id).attr("class", " input-group input-group-sm");
+                    }
+                }
                 $scope.guardarelemento = function (e) {
                     var abuelo = $('#' + idelemento).parent().attr("id");
                     var classabuelo = $('#' + idelemento).parent().attr("class");
                     var padre = $('#' + abuelo).children().attr('id');
-
-
                     console.log($('#'+padre).children('.thumb').attr("class"))
 
                     //texto
@@ -425,11 +455,6 @@ angular.module('app.controllers', [])
                 {id:2,height:'100px'},
                 {id:3,height:'150px'},
                 {id:4,height:'200px'},
-                {id:5,height:'250px'},
-                {id:6,height:'300px'},
-                {id:7,height:'350px'},
-                {id:8,height:'400px'},
-
             ]
             $scope.anchotexto=[
                 {id:1,name:'grande', clase:'input-group input-group-lg'},
@@ -453,8 +478,10 @@ angular.module('app.controllers', [])
             ];
 
             $scope.formaimmagen={
-            opcion:null,
+                opcion:null,
             }
+            $scope.anchoelegido={opcion:{}}
+            $scope.value={ancho:null}
 
             // textbox
             if ($('#' + padre).children('.texto').attr("class") === 'form-control texto') {
@@ -462,6 +489,7 @@ angular.module('app.controllers', [])
                     textbox:{}
                 }
                 $scope.verattrtexto = 'true';
+                $scope.elemento.textbox.idpadre=$('#' + padre).attr('id');
                 $scope.elemento.textbox.id=$('#' + idh1).attr('id');
                 $scope.elemento.textbox.texttitulo=$('#' + idh1).text();
                 $scope.elemento.textbox.color=$('#' + idh1).css('color')
@@ -469,7 +497,6 @@ angular.module('app.controllers', [])
                 $scope.elemento.textbox.font_size=$('#' + idh1).css('font-size');
                 $scope.elemento.textbox.font_family=$('#' + idh1).css('font-family');
                 $scope.elemento.textbox.clase=$('#' + padre).attr('class');
-
                 $scope.fontfamilia.push({id:10,name: $scope.elemento.textbox.font_family});
                 $scope.familiaelegida=$scope.fontfamilia[9];
                 $scope.elemento.textbox.widthcheck=$('#' + padre).css('width');
@@ -479,30 +506,34 @@ angular.module('app.controllers', [])
                 $scope.nomb_elemento=$scope.elemento.textbox.texttitulo;
                 $scope.textConfig.textcolor= $scope.elemento.textbox.color;
                 $scope.textConfig.colorfondo= $scope.elemento.textbox.color_fondo;
-                $scope.font_size.opcion=$scope.elemento.textbox.font_size;
-                $scope.posicion.opcion
-                console.log('clase :'+$scope.elemento.textbox.clase)
-
+                $scope.textConfig.font_size=$scope.elemento.textbox.font_size;
+                $scope.textConfig.idpadre=$scope.elemento.textbox.idpadre
                 if(  $scope.elemento.textbox.clase==='input-group element'){
-                    $scope.anchoelegido =$scope.anchotexto[2]
+                    $scope.anchoelegido.opcion =$scope.anchotexto[2]
 
                 }else if( $scope.elemento.textbox.clase==='input-group input-group-lg'){
-                    $scope.anchoelegido =$scope.anchotexto[0]
+                    $scope.anchoelegido.opcion =$scope.anchotexto[0]
 
                 }else if( $scope.elemento.textbox.clase==='input-group input-group-sm'){
-                    $scope.anchoelegido =$scope.anchotexto[1]
+                    $scope.anchoelegido.opcion =$scope.anchotexto[1]
                 }
 
+               // $scope.anchotext(ancho,padre);
                 $scope.cambio = function () {
                     $scope.nomb_elemento;
-                    $scope.font_size.opcion
+                    $scope.textConfig.font_size
                     $scope.textConfig.textcolor
                     $scope.textConfig.colorfondo
                     $scope.familiaelegida
-                    $scope.anchoelegido
                     $scope.largoelemento
                     $scope.posicion.opcion
+                    $scope.textConfig.idpadre
+                    $scope.anchoelegido.opcion
+                    $('#ejemplotexbox').attr('class',$scope.anchoelegido.opcion.clase)
+                    $scope.posiciontext( $scope.posicion.opcion,'ejemplotexbox');
+
                 }
+
             }
             //panel
             if ($('#' + padre).attr("class") === 'panelP card grid _md') {
@@ -525,13 +556,15 @@ angular.module('app.controllers', [])
                 $scope.widthbuton.push({id:9,width: $scope.elemento.boton.widthbton});
                 $scope.anchoelement=$scope.widthbuton[8];
 
-                $scope.heightbuton.push({id:9,height: $scope.elemento.boton.heightbton});
-                $scope.altoelement=$scope.heightbuton[8];
+                $scope.heightbuton.push({id:5,height: $scope.elemento.boton.heightbton});
+                $scope.altoelement=$scope.heightbuton[4];
 
                 $scope.textConfig.textcolor= $scope.elemento.boton.color;
                 $scope.textConfig.colorfondo= $scope.elemento.boton.color_fondo;
                 $scope.nomb_elementobtn=  $scope.elemento.boton.valor;
-                $scope.font_size.opcion= $scope.elemento.boton.font_size;
+                var str =$scope.elemento.boton.font_size;
+                var fontsize = str.split("px");
+                $scope.font_size.opcion= fontsize;
 
                 $scope.cambio = function () {
                     $scope.anchoelement
@@ -577,6 +610,9 @@ angular.module('app.controllers', [])
                 $scope.textConfig.colorborde= $scope.elemento.check.color_borde;
                 $scope.posicion.opcion
                 console.log($scope.anchoelegido)
+                $scope.clickradio=function(){
+                    console.log('hola radio')
+                }
                 $scope.cambio = function () {
                     $scope.textConfig.colorborde
                     $scope.textConfig.colorfondo
@@ -600,10 +636,12 @@ angular.module('app.controllers', [])
 
                 $scope.modal.nomb_elemento=$scope.elemento.parrafo.valor;
                 $scope.textConfig.textcolor= $scope.elemento.parrafo.color;
-                $scope.font_size.opcion= $scope.elemento.parrafo.font_size;
+
                 $scope.fontfamilia.push({id:10,name:$scope.elemento.parrafo.font_family});
                 $scope.familiaelegida=$scope.fontfamilia[9];
-
+                var str =$scope.elemento.parrafo.font_size;
+                var fontsize = str.split("px");
+                $scope.font_size.opcion= fontsize;
 
                 $scope.cambio = function () {
                     $scope.fonts.opcion;
@@ -661,20 +699,35 @@ angular.module('app.controllers', [])
                 $scope.verattrselect='true';
                 $scope.elemento={select:{}}
 
+                $scope.formulario= {
+                    form: {
+                        elementos_form:[{}]
+                    }
+                }
+
                 var idh1=$('#'+padre).children('.selecthijo').attr('id');
                 var idh2=$('#'+padre).children('.textoselect').attr('id');
-
+                $scope.elementohtml=document.getElementById(abuelo);
+                $scope.html=$(abuelo).attr('id')
                 $scope.elemento.select.id=$('#' + padre).attr('id');
                 $scope.elemento.select.idtitulo=$('#' + idh2).attr('id')
                 $scope.elemento.select.widthcheck=$('#' + abuelo).css('width');
                 $scope.elemento.select.texttitulo=$('#' + idh2).text();
+                $scope.elemento.select.color=$('#' + idh2).css('color');
                 $scope.widthcheck.push({id:6,width:  $scope.elemento.select.widthcheck});
                 $scope.largoelemento=$scope.widthcheck[5];
                 $scope.tituloselect=$scope.elemento.select.texttitulo;
                 $scope.lista=storageLista.listadatos($scope.elemento.select.id);
                 $scope.elemento.select.idvisualselect=$('#sel1').attr('id');
+                $scope.textConfig.textcolor= $scope.elemento.select.color;
+
+                $scope.formulario.form.nombre="formulario1"
+                $scope.formulario.form.tipoform="minero";
+                $scope.formulario.form.elementos_form=$scope.elementohtml;
+
 
                 $scope.cambio = function () {
+                    $scope.textConfig.textcolor
                     $scope.elemento.select.idtitulo
                     $scope.lista
                     $scope.largoelemento
