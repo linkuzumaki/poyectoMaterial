@@ -56,7 +56,7 @@ angular.module('app.directive', [])
                 //se edita los atributos de objeto  clonado
                 $(copy).attr("id", "ElemClonado" + contador);
                 $(copy).children('.element').attr("id", "hijo" + contador);// crea la id  para  el hijo con clase element
-                $(copy).children('.element').attr("style", "width:100%;height:100%");
+                $(copy).children('.element').attr("style", "width:100%;height:100%;");
                 $(copy).attr("ondragstart", "start(event)");
                 $(copy).attr("ondragend", "end(event)");
 
@@ -81,11 +81,11 @@ angular.module('app.directive', [])
 
                 }
                 if(idelemento==='parrafos'){
-                    $(copy).attr("style", "display:show;");
+                    $(copy).attr("style", "display:show;word-wrap: break-word");
 
                 }
                 if (idelemento==='check'){
-                    $(copy).attr("style", "display:show;width: 100px;padding-top: 0px;padding-bottom: 0px;margin-top: 0px; " +
+                    $(copy).attr("style", "display:show;width:100px;padding-top: 0px;padding-bottom: 0px;margin-top: 0px; " +
                         "margin-bottom: 0px;");
 
                 }

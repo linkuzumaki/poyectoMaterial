@@ -84,7 +84,7 @@ angular.module('app.controllers', [])
             i = 1;
         }*/
     }])
-    .controller('ModalCtrl',["$scope","storageLista","ngDialog","$compile","fileReader", function ($scope,storageLista,ngDialog,$compile,fileReader) {
+    .controller('ModalCtrl',["$scope","storageLista","ngDialog","$compile","fileReader","$mdToast", function ($scope,storageLista,ngDialog,$compile,fileReader,$mdToast) {
 
                 $scope.clickToOpen = function () {
                     idelemento = event.target.id;
@@ -127,6 +127,9 @@ angular.module('app.controllers', [])
                 $scope.eliminarlista=function(index) {
                     storageLista.removelista(index,$scope.lista)
                 }
+
+                //cambia los valores de los elementos de la pizarra
+
                 $scope.editarboton=function (padre) {
                     var id=$scope.elemento.boton.id;
                     var idh = document.getElementById(id);
@@ -152,31 +155,31 @@ angular.module('app.controllers', [])
                     var id=$scope.elemento.textbox.id;
                     var hijoid = document.getElementById(id);
                     var posicion=  $scope.posicion.opcion;
-                    console.log('id padre '+padre)
                     $('#' + id).text($scope.nomb_elemento);
+
                     $(padreid).attr('class',$scope.anchoelegido.opcion.clase)
                     hijoid.style.color= $scope.textConfig.textcolor;
                     hijoid.style.fontFamily= $scope.familiaelegida.name;
                     hijoid.style.backgroundColor= $scope.textConfig.colorfondo;
                     abueloid.style.width= $scope.largoelemento.width;
-
                     $scope.posiciontext( posicion, padre);
-
-
-
                 }
                 $scope.editarparrafo=function(padre){
 
                     var id=$scope.elemento.parrafo.id;
                     var hijoid = document.getElementById(id);
+                    var padreid = document.getElementById(padre);
                     $('#' + id).text($scope.modal.nomb_elemento);
                     hijoid.style.color=$scope.textConfig.textcolor;
                     hijoid.style.fontSize=$scope.font_size.opcion+'px';
-                    hijoid.style.textAlign= alignvalor;
+                    hijoid.style.textAlign= $scope.font_align;
+                    hijoid.style.fontWeight=$scope.font_weight
+                    hijoid.style.fontStyle=$scope.font_style
                     hijoid.style.fontFamily=  $scope.familiaelegida.name;
-                    hijoid.style.height='150px';
-                    hijoid.style.width='250px';
-
+                    padreid.style.width='230px';
+                    padreid.style.height='0px';
+                    padreid.style.backgroundColor= $scope.textConfig.textfondo;
+                    padreid.style.wordWrap='break-word'
                    // $scope.elemento={'parrafo':[{}]};
                    // $scope.elementos.push({element:[{  id: $scope.elemento.parrafo.id }]});
                 }
@@ -190,18 +193,11 @@ angular.module('app.controllers', [])
                     var hijoid = document.getElementById(idh1);
                     var hijoid2 = document.getElementById(idh2);
                     var posicion=  $scope.posicion.opcion;
+                    console.log(padreid)
+                   $(padreid).attr('class',$scope.anchoelegido.opcion.clase)
                     abuid.style.width= $scope.largoelemento.width;
-                    console.log('name ele: '+$scope.anchoelegido.name)
-                    if( $scope.anchoelegido.name==='grande'){
-                        $(padreid).attr('class',$scope.anchoelegido.clase)
-                    }else if( $scope.anchoelegido.name==='pequeño'){
-                        $(padreid).attr('class',$scope.anchoelegido.clase)
-                    }else if( $scope.anchoelegido.name==='normal'){
-                        console.log('cambio de clas :'+$scope.anchoelegido.name)
-                        $(padreid).attr('class',$scope.anchoelegido.clase)
-                    }
-                    $scope.posiciontext( posicion, padre);
                     hijoid.style.backgroundColor=  $scope.textConfig.colorfondo;
+                    $scope.posiciontext( posicion, padre);
                 }
                 $scope.editarimg=function (padre) {
                     var abuelo = $('#' + padre).parent().attr("id");
@@ -252,19 +248,44 @@ angular.module('app.controllers', [])
                     $('#' + id).text($scope.tituloselect);
                     abueloid.style.width= $scope.largoelemento.width;
                     idtitulo.style.color= $scope.textConfig.textcolor;
+                    idtitulo.style.fontFamily=$scope.familiaelegida.name
                 }
+                $scope.editararea=function(padre){
+                    var padreid=document.getElementById(padre);
+                    var id=$scope.elemento.textarea.idtitulo;
+                    $('#' + id).text($scope.nomb_elemento);
+                    var idtitulo=document.getElementById(id);
+                    padreid.style.width=$scope.largoelemento.width
+                    idtitulo.style.color= $scope.textConfig.textcolor;
+                }
+                //funciones de edicion de textos
                 $scope.alignjustificar=function(){
-                   alignvalor='justify';
+                    $scope.font_align='justify'
                 }
                 $scope.aligncentrar=function(){
-                    alignvalor='center';
+                    $scope.font_align='center'
                 }
                 $scope.alignderecha=function(){
-                    alignvalor='right';
+                    $scope.font_align='right'
                 }
                 $scope.alignizquierda=function(){
-                    alignvalor='left';
+                    $scope.font_align='left'
                 }
+                $scope.negritatexto=function(){
+                    if( $scope.font_weight==='bold'){
+                        $scope.font_weight='normal'
+                    }else{
+                        $scope.font_weight='bold'
+                    }
+                }
+                $scope.cursivatexto=function(){
+                    if(  $scope.font_style==='oblique'){
+                        $scope.font_style='normal'
+                    }else{
+                        $scope.font_style='oblique'
+                    }
+                }
+                //funcion de posicion de texbox y check
                 $scope.posiciontext=function(posicion,id){
                     if(posicion==='derecha'){
                         $($('#' + id).children('.textotitulo')).before($('#' + id).children('.texto')); //derecha
@@ -274,20 +295,8 @@ angular.module('app.controllers', [])
                         $($('#' + id).children('.textocheck')).before($('#' + id).children('.check')); //izquierda
                     }
                 }
-                $scope.anchotext=function (ancho,id) {
-                    console.log(ancho.id)
-                    console.log(id)
-                    if( ancho.id=== '1'){
-                        //grande
-                        $('#' + id).attr("class", " input-group input-group-lg");
-                    } else if (ancho.id === '2') {
-                        //normal
-                        $('#' + id).attr("class", " input-group");
-                    } else if (ancho.id === '3') {
-                        //pequeño
-                        $('#' + id).attr("class", " input-group input-group-sm");
-                    }
-                }
+
+                //guardar los cambios
                 $scope.guardarelemento = function (e) {
                     var abuelo = $('#' + idelemento).parent().attr("id");
                     var classabuelo = $('#' + idelemento).parent().attr("class");
@@ -308,6 +317,7 @@ angular.module('app.controllers', [])
                        var padre= $('#' + abuelo).children('.element').attr("id");
                         console.log(padre);
                         $scope.editarboton(abuelo);
+
                     }
                     //parrafo
                     if ($('#' + padre).children('.element').attr("class") === 'lead element') {
@@ -350,9 +360,17 @@ angular.module('app.controllers', [])
                     if($('#' + padre).attr("class") === 'form-group element selectP ng-scope'){
                         $scope.editarselect(padre);
                     }
-                    console.log($('#' + idelemento).text());
-
+                    if($('#' + padre).attr("class")==='form-group element areap'){
+                        $scope.editararea(padre);
+                    }
+                    $mdToast.show(
+                        $mdToast.simple()
+                            .textContent('Elemento Modificado Con Exito')
+                            .hideDelay(1000)
+                            .position('top right')
+                    );
                     ngDialog.closeAll();
+
                 };
             }])
     .controller('modaldatosCtrl',["$scope","$compile","fileReader","storageLista",function ($scope,$compile,fileReader,storageLista) {
@@ -378,8 +396,9 @@ angular.module('app.controllers', [])
             //cambio id select
             $('#'+padre).children('.selecthijo').attr('id',"select" + contador);
             $('#'+padre).children('.textoselect').attr('id',"selecttexto" + contador);
-
-
+            //cambio id al area
+            $('#'+padre).children('.tituloarea').attr('id',"areatitulo" + contador);
+            $('#'+padre).children('.areacuadro').attr('id',"cuadroarea" + contador);
 
             $scope.ancho = {
                 opcion: null,
@@ -402,6 +421,7 @@ angular.module('app.controllers', [])
                     icon: "brush",
                     default: "#000000",
                     genericPalette: false,
+                    materialPalette:false,
                     history: false
                 },
                 optionsb:{
@@ -409,6 +429,7 @@ angular.module('app.controllers', [])
                     icon: "brush",
                     default: "rgb(205, 205, 205)",
                     genericPalette: false,
+                    materialPalette:false,
                     history: false
                 },
                 optionsborder:{
@@ -504,20 +525,18 @@ angular.module('app.controllers', [])
                 $scope.largoelemento=$scope.widthcheck[5];
 
                 $scope.nomb_elemento=$scope.elemento.textbox.texttitulo;
-                $scope.textConfig.textcolor= $scope.elemento.textbox.color;
+                $scope.textConfig.textcolor=$scope.elemento.textbox.color;
                 $scope.textConfig.colorfondo= $scope.elemento.textbox.color_fondo;
                 $scope.textConfig.font_size=$scope.elemento.textbox.font_size;
-                $scope.textConfig.idpadre=$scope.elemento.textbox.idpadre
+                $scope.textConfig.idpadre=$scope.elemento.textbox.idpadre;
+
                 if(  $scope.elemento.textbox.clase==='input-group element'){
                     $scope.anchoelegido.opcion =$scope.anchotexto[2]
-
                 }else if( $scope.elemento.textbox.clase==='input-group input-group-lg'){
                     $scope.anchoelegido.opcion =$scope.anchotexto[0]
-
                 }else if( $scope.elemento.textbox.clase==='input-group input-group-sm'){
                     $scope.anchoelegido.opcion =$scope.anchotexto[1]
                 }
-
                // $scope.anchotext(ancho,padre);
                 $scope.cambio = function () {
                     $scope.nomb_elemento;
@@ -531,9 +550,7 @@ angular.module('app.controllers', [])
                     $scope.anchoelegido.opcion
                     $('#ejemplotexbox').attr('class',$scope.anchoelegido.opcion.clase)
                     $scope.posiciontext( $scope.posicion.opcion,'ejemplotexbox');
-
                 }
-
             }
             //panel
             if ($('#' + padre).attr("class") === 'panelP card grid _md') {
@@ -564,7 +581,7 @@ angular.module('app.controllers', [])
                 $scope.nomb_elementobtn=  $scope.elemento.boton.valor;
                 var str =$scope.elemento.boton.font_size;
                 var fontsize = str.split("px");
-                $scope.font_size.opcion= fontsize;
+                $scope.font_size.opcion= fontsize[0];
 
                 $scope.cambio = function () {
                     $scope.anchoelement
@@ -590,26 +607,22 @@ angular.module('app.controllers', [])
                 $scope.elemento.check.color_borde=$('#' + idh1).css('border-color');
                 $scope.elemento.check.clase=$('#' + padre).attr('class');
                 $scope.elemento.check.widthcheck=$('#' + padre).css('width');
-
+                console.log( $scope.elemento.check.clase)
                 $scope.widthcheck.push({id:6,width:  $scope.elemento.check.widthcheck});
                 $scope.largoelemento=$scope.widthcheck[5];
 
-                console.log('width check : '+ $scope.elemento.check.widthcheck);
-
                 if(  $scope.elemento.check.clase==='input-group element'){
-                    $scope.anchoelegido =$scope.anchotexto[2]
-
+                    $scope.anchoelegido.opcion =$scope.anchotexto[2]
                 }else if( $scope.elemento.check.clase==='input-group input-group-lg'){
-                    $scope.anchoelegido =$scope.anchotexto[0]
-
+                    $scope.anchoelegido.opcion =$scope.anchotexto[0]
                 }else if( $scope.elemento.check.clase==='input-group input-group-sm'){
-                    $scope.anchoelegido =$scope.anchotexto[1]
+                    $scope.anchoelegido.opcion =$scope.anchotexto[1]
                 }
 
                 $scope.textConfig.colorfondo= $scope.elemento.check.color_fondo;
                 $scope.textConfig.colorborde= $scope.elemento.check.color_borde;
                 $scope.posicion.opcion
-                console.log($scope.anchoelegido)
+
                 $scope.clickradio=function(){
                     console.log('hola radio')
                 }
@@ -619,33 +632,47 @@ angular.module('app.controllers', [])
                     $scope.posicion.opcion
                     $scope.anchoelegido
                     $scope.largoelemento
+                    $scope.anchoelegido.opcion
+                    $('#checkelemento').attr('class',$scope.anchoelegido.opcion.clase)
+                    $scope.posiciontext( $scope.posicion.opcion,'checkelemento');
 
                 }
             }
             //parrafo
             if ($('#'+padre).attr("class") === 'input-group element parrafoPH layout-padding _md flex'){
                 var idh1=$('#' + padre).children('.element').attr('id');
+                var idpadre=$('#'+padre).attr('id');
                 $scope.elemento={parrafo:{}};
                 $scope.verattrparrafo = 'true';
 
+                $scope.elemento.parrafo.color_fondo=$('#'+idpadre).css('background-color');
                 $scope.elemento.parrafo.id=$('#' + idh1).attr('id');
                 $scope.elemento.parrafo.valor=$('#' + idh1).text();
                 $scope.elemento.parrafo.color=$('#' + idh1).css('color')
                 $scope.elemento.parrafo.font_size=$('#' + idh1).css('font-size');
                 $scope.elemento.parrafo.font_family=$('#' + idh1).css('font-family');
+                $scope.elemento.parrafo.fontalinear=$('#' + idh1).css('text-align');
+                $scope.elemento.parrafo.negrita=$('#' + idh1).css('font-weight');
+                $scope.elemento.parrafo.cursiva=$('#' + idh1).css('font-style');
 
                 $scope.modal.nomb_elemento=$scope.elemento.parrafo.valor;
                 $scope.textConfig.textcolor= $scope.elemento.parrafo.color;
-
+                $scope.textConfig.textfondo=$scope.elemento.parrafo.color_fondo
                 $scope.fontfamilia.push({id:10,name:$scope.elemento.parrafo.font_family});
                 $scope.familiaelegida=$scope.fontfamilia[9];
+                $scope.font_align= $scope.elemento.parrafo.fontalinear;
+                $scope.font_weight=$scope.elemento.parrafo.negrita;
+                $scope.font_style=$scope.elemento.parrafo.cursiva;
                 var str =$scope.elemento.parrafo.font_size;
                 var fontsize = str.split("px");
-                $scope.font_size.opcion= fontsize;
+                console.log(fontsize);
+                console.log($scope.font_align);
+                $scope.font_size.opcion= fontsize[0];
 
                 $scope.cambio = function () {
                     $scope.fonts.opcion;
                     $scope.textConfig.textcolor;
+                    $scope.textConfig.textfondo
                     $scope.font_size.opcion
                     $scope.modal.nomb_elemento
                     $scope.familiaelegida
@@ -671,8 +698,8 @@ angular.module('app.controllers', [])
                 $scope.widthbuton.push({id:9,width: $scope.elemento.imagen.widthbton});
                 $scope.anchoelement=$scope.widthbuton[8];
 
-                $scope.heightbuton.push({id:9,height: $scope.elemento.imagen.heightbton});
-                $scope.altoelement=$scope.heightbuton[8];
+                $scope.heightbuton.push({id:5,height: $scope.elemento.imagen.heightbton});
+                $scope.altoelement=$scope.heightbuton[4];
 
 
                 $scope.cambio = function () {
@@ -713,6 +740,7 @@ angular.module('app.controllers', [])
                 $scope.elemento.select.idtitulo=$('#' + idh2).attr('id')
                 $scope.elemento.select.widthcheck=$('#' + abuelo).css('width');
                 $scope.elemento.select.texttitulo=$('#' + idh2).text();
+                $scope.elemento.select.font_family=$('#' + idh2).css('font-family');
                 $scope.elemento.select.color=$('#' + idh2).css('color');
                 $scope.widthcheck.push({id:6,width:  $scope.elemento.select.widthcheck});
                 $scope.largoelemento=$scope.widthcheck[5];
@@ -720,7 +748,8 @@ angular.module('app.controllers', [])
                 $scope.lista=storageLista.listadatos($scope.elemento.select.id);
                 $scope.elemento.select.idvisualselect=$('#sel1').attr('id');
                 $scope.textConfig.textcolor= $scope.elemento.select.color;
-
+                $scope.fontfamilia.push({id:10,name:$scope.elemento.select.font_family});
+                $scope.familiaelegida=$scope.fontfamilia[9];
                 $scope.formulario.form.nombre="formulario1"
                 $scope.formulario.form.tipoform="minero";
                 $scope.formulario.form.elementos_form=$scope.elementohtml;
@@ -731,16 +760,32 @@ angular.module('app.controllers', [])
                     $scope.elemento.select.idtitulo
                     $scope.lista
                     $scope.largoelemento
-
+                    $scope.familiaelegida
                 }
-
-
             }
+            // text area
+            if($('#' + padre).attr("class")==='form-group element areap'){
+                $scope.verattrarea='true';
+                $scope.elemento={textarea:{}}
+                var idh2=$('#'+padre).children('.tituloarea').attr('id');
+                $scope.elemento.textarea.id=$('#'+padre).attr('id');
+                $scope.elemento.textarea.idtitulo=$('#'+idh2).attr('id')
+                $scope.elemento.textarea.texttitulo=$('#' + idh2).text();
+                $scope.elemento.textarea.color=$('#' + idh2).css('color')
+                $scope.elemento.textarea.widthcheck=$('#' + padre).css('width');
 
+                $scope.textConfig.textcolor=$scope.elemento.textarea.color;
+                $scope.widthcheck.push({id:6,width:  $scope.elemento.textarea.widthcheck});
+                $scope.largoelemento=$scope.widthcheck[5];
 
-
-
-            }])
+                $scope.nomb_elemento=$scope.elemento.textarea.texttitulo;
+                $scope.cambio = function () {
+                    $scope.nomb_elemento
+                    $scope.largoelemento
+                    $scope.textConfig.textcolor
+                }
+            }
+    }])
     .controller('UploadController',["$scope","fileReader",function ($scope, fileReader) {
         $scope.readFile = function () {
             fileReader.readAsDataUrl($scope.file, $scope)
@@ -751,5 +796,12 @@ angular.module('app.controllers', [])
 
         };
     }])
-
+    .controller('viewCtrl',['$scope',function($scope){
+       $scope.viewmovil=function(){
+           $scope.elemtpizarra=document.getElementById('contpizarra');
+           var copy = $($scope.elemtpizarra).clone(true);
+           $('#vistamovil').append(copy);
+           document.getElementById("innerHTMLtxt").textContent= document.getElementById("contpizarra").innerHTML
+       }
+    }])
 
